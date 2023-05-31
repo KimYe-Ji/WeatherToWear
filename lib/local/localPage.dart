@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:localweather/local/locationclass.dart';
-import 'package:localweather/local/localUI.dart';
+import 'package:alarm_example/local/locationclass.dart';
+import 'package:alarm_example/local/localUI.dart';
 
 List<localLocation> _searchResults = [];
 List<localLocation> _favorites = [];

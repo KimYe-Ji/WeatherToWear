@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 //import 'dart:convert';
 //import 'package:http/http.dart' as http;
-import 'package:localweather/local/locationclass.dart';
+import 'package:alarm_example/local/locationclass.dart';
 //import 'package:localweather/local/localPage.dart';
-import 'package:localweather/models/location.dart';
-import 'package:localweather/models/weatherAPI.dart';
-import 'package:localweather/main.dart';
+import 'package:alarm_example/models/location.dart';
+import 'package:alarm_example/models/weatherAPI.dart';
+import 'package:alarm_example/main.dart';
 //import 'package:geolocator/geolocator.dart';
 
 
