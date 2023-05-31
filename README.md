@@ -1,6 +1,6 @@
-# alarm_example
+# WeatherToWeather Project
 
-Demonstrates how to use the alarm plugin.
+WeatherToWeather Project for HCI.
 
 ## Getting Started
 
