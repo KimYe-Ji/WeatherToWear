@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:alarm_example/local/locallocation.dart';
-import 'package:alarm_example/local/localUI.dart';
+import 'package:localweather/local/locationclass.dart';
+import 'package:localweather/local/localUI.dart';
+
+List<localLocation> _searchResults = [];
+List<localLocation> _favorites = [];
 
 class localPage extends StatefulWidget {
   @override
@@ -17,8 +20,7 @@ class _localPageState extends State<localPage> {
     localLocation(city: '인천', district: '연수구', latitude: 37.5034, longitude: 126.7661),
     // 미리 만들어둔 지역 리스트
   ];
-  List<localLocation> _searchResults = [];
-  List<localLocation> _favorites = [];
+  
 
   void searchlocalLocations(String query) async {
   // Check if the search results already contain the searched word
