@@ -6,6 +6,7 @@ import 'package:alarm_example/screens/ring.dart';
 import 'package:alarm_example/models/tile_alarm.dart';
 import 'package:flutter/material.dart';
 
+//Main Screen of Alarm Feature
 class ExampleAlarmHomeScreen extends StatefulWidget {
   const ExampleAlarmHomeScreen({Key? key}) : super(key: key);
 

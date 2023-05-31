@@ -2,14 +2,11 @@ import "package:alarm_example/main.dart";
 import "package:flutter/material.dart";
 import "package:flutter_tts/flutter_tts.dart";
 
-//메인화면의 날씨 정보를 받아오고, tts 정보 알려주기 
+//Alarm - TTS, Weather Info
 class AlarmInfo extends StatelessWidget {
   final FlutterTts tts = FlutterTts();
   final TextEditingController controller =
-      TextEditingController(text: 'Hello world'); //음성 변환 정보 들어가야하는 내용 
-
-  //final Location location = Location();
-  //var ad = currentLocation.address;
+      TextEditingController(text: 'Hello world'); //음성 변환 정보 들어가야하는 내용
 
   AlarmInfo() {
     tts.setLanguage('kr');
@@ -17,28 +14,28 @@ class AlarmInfo extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) { //UI 구현 메인화면 참고해서 
+  Widget build(BuildContext context) { //UI 구현 메인화면 참고
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(
-            currentLocation.address,
+          Text( //현위치 정보
+            currentLocation.address, 
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 50,
               fontWeight: FontWeight.bold,
             ),
           ),
-          Icon(
+          Icon( //날씨에 따른 아이콘 정보 *switch case 구현 필요
             Icons.sunny,
           ),
-          Expanded(
+          Expanded( //옷차림 정보
             child: Image(
               image : AssetImage('assets/image/cloth_example.png'),
             ),
           ),
-          Row(
+          Row( //기온
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
@@ -50,7 +47,7 @@ class AlarmInfo extends StatelessWidget {
               ),
             ],
           ),
-          Row(
+          Row( //강수확률(pop), 습도(reh), 최저기온(tmn), 최고기온(tmx) 추가 필요
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
@@ -62,7 +59,7 @@ class AlarmInfo extends StatelessWidget {
               ),
             ],
           ),
-          ElevatedButton(
+          ElevatedButton( //알람 TTS 끄고 메인화면으로 이동 필요
             onPressed: () {
               print("Turn off");
             }, 
