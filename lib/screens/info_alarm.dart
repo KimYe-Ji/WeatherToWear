@@ -9,7 +9,7 @@ class AlarmInfo extends StatelessWidget {
       TextEditingController(text: 'Hello world'); //음성 변환 정보 들어가야하는 내용 
 
   //final Location location = Location();
-  var ad = currentLocation.address;
+  //var ad = currentLocation.address;
 
   AlarmInfo() {
     tts.setLanguage('kr');
