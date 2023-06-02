@@ -8,6 +8,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 // get - Today's forecast
   List<Weather> getTodayWeather(dynamic data) {
   //print("Today's date: ");
@@ -109,6 +111,9 @@ void sortCategory(Location location, List<dynamic> weatherList) {
       case "REH":
         location.rehList.add(weatherList[i]);
         break;
+      case "SKY":
+        location.skyList.add(weatherList[i]);
+        break;
       case "TMN":
         location.tmn = double.parse(weatherList[i].fcstValue);
         break;
@@ -139,13 +144,21 @@ class weatherAPI {
   // constructor - 예지 참고 
   weatherAPI(String today, Position position) {
     this.base_date = today;
+    int now = DateTime.now().hour;
     
     // set - nx & ny
     gridXY point = convertLongLat(position.longitude, position.latitude);
     this.nx = point.x.toString();
     this.ny = point.y.toString();
 
-    this.url = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=$api_key&pageNo=$pageNo&numOfRows=$numOfRows&dataType=$dataType&base_date=$base_date&base_time=$base_time&nx=$nx&ny=$ny";
+    if(now >= 0 && now <= 2) {
+      base_date = DateFormat("yyyyMMdd").format(DateTime.now().subtract(Duration(days: 1)));
+      print("어제: $base_date");
+      base_time = "2300";
+      this.url = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=$api_key&pageNo=$pageNo&numOfRows=$numOfRows&dataType=$dataType&base_date=$base_date&base_time=$base_time&nx=$nx&ny=$ny";
+    } else {
+      this.url = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=$api_key&pageNo=$pageNo&numOfRows=$numOfRows&dataType=$dataType&base_date=$base_date&base_time=$base_time&nx=$nx&ny=$ny";
+    }
   }
 
   weatherAPI.weatherAPI2(String today, double long, double lat) {
@@ -164,6 +177,8 @@ class weatherAPI {
     // call API
     http.Response uriResponse = await http.get(Uri.parse(url));
 
+    // print(uriResponse.body);
+
     // get JSON data
     var json = jsonDecode(uriResponse.body);
     var weatherJson = json["response"]["body"]["items"]["item"];
@@ -180,5 +195,17 @@ class weatherAPI {
     // currentLocation.tmn = getTodayTmn(weatherToday);
     // currentLocation.tmx = getTodayTmx(weatherToday);
     sortCategory(location, weatherToday);
+
+    // 현재 시간 날씨 배열에 값 저장 - String
+    String time = DateTime.now().hour.toString();
+    if(time.length == 1) {
+      time = "0${time}00";
+    } else {
+      time = "${time}00";
+    }
+    print(time);
+
+    currentLocation.weatherNow(time);
+    print(currentLocation.weatherNowList);
   }
 }

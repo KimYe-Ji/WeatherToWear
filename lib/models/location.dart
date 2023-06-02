@@ -10,6 +10,8 @@ class Location {
   late List<Weather> tempList;
   late List<Weather> popList;
   late List<Weather> rehList;
+  late List<Weather> skyList;
+  late List<String> weatherNowList;
   late double tmn = -273.15;
   late double tmx = 1200;
 
@@ -19,6 +21,8 @@ class Location {
     tempList = new List.empty(growable: true);
     popList = new List.empty(growable: true);
     rehList = new List.empty(growable: true);
+    skyList = new List.empty(growable: true);
+    weatherNowList = new List.empty(growable: true);
   }
 
   // set location's long, lat
@@ -77,11 +81,48 @@ class Location {
     }
   }
 
+  void getSkyList() {
+    for(Weather w in skyList) {
+      w.getWeather();
+    }
+  }
   void getTmn() {
     print("최저 기온: $tmn");
   }
 
   void getTmx() {
     print("최고 기온: $tmx");
+  }
+
+  void weatherNow(var time) {
+    // List<String> weatherNow = new List.empty(growable: true);
+
+    for(Weather w in tempList) {
+      if(w.fcsttime == time) {
+        weatherNowList.add(w.fcstValue);
+        // print("1");
+      }
+    }
+
+    for(Weather w in popList) {
+      if(w.fcsttime == time) {
+        weatherNowList.add(w.fcstValue);
+        // print("2");
+      }
+    }
+
+    for(Weather w in rehList) {
+      if(w.fcsttime == time) {
+        weatherNowList.add(w.fcstValue);
+        // print("3");
+      }
+    }
+
+    for(Weather w in skyList) {
+      if(w.fcsttime == time) {
+        weatherNowList.add(w.fcstValue);
+        // print("4");
+      }
+    }
   }
 }
