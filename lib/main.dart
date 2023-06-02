@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Weather2Wear - main',
       theme: ThemeData(
         // This is the theme of your application.
@@ -262,6 +263,7 @@ class _MyLocationState extends State<MyHomePage> {
                 child: getClothesContainer
               )
             ],
+          ),
         ]
       ),
       bottomNavigationBar: myNavigationbar,
