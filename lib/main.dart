@@ -140,14 +140,14 @@ class _MyLocationState extends State<MyHomePage> {
             ],
           ), 
           // 날씨 / 옷
-          ElevatedButton(onPressed:() {
+          /*ElevatedButton(onPressed:() {
             Navigator.push(
               context, 
               MaterialPageRoute(builder: (context) => AlarmInfo()),  //임시로 알람 tts 화면 넘어가도록 설정
             );
           }, 
           child: Text("LocalPage"),
-          ),
+          ),*/
         ]
       ),
     );
