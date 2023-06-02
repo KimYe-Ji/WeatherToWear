@@ -163,13 +163,21 @@ class weatherAPI {
 
   weatherAPI.weatherAPI2(String today, double long, double lat) {
       this.base_date = today;
+      int now = DateTime.now().hour;
     
     // set - nx & ny
     gridXY point = convertLongLat(long, lat);
     this.nx = point.x.toString();
     this.ny = point.y.toString();
 
-    this.url = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=$api_key&pageNo=$pageNo&numOfRows=$numOfRows&dataType=$dataType&base_date=$base_date&base_time=$base_time&nx=$nx&ny=$ny";
+    if(now >= 0 && now <= 2) {
+      base_date = DateFormat("yyyyMMdd").format(DateTime.now().subtract(Duration(days: 1)));
+      print("어제: $base_date");
+      base_time = "2300";
+      this.url = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=$api_key&pageNo=$pageNo&numOfRows=$numOfRows&dataType=$dataType&base_date=$base_date&base_time=$base_time&nx=$nx&ny=$ny";
+    } else {
+      this.url = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=$api_key&pageNo=$pageNo&numOfRows=$numOfRows&dataType=$dataType&base_date=$base_date&base_time=$base_time&nx=$nx&ny=$ny";
+    }
   }
 
   void init(Location location) async {

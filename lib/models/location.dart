@@ -11,7 +11,14 @@ class Location {
   late List<Weather> popList;
   late List<Weather> rehList;
   late List<Weather> skyList;
+
+  // 현재 시간에 따른 날씨 정보 string 형태의 수치
+  // index 0 - 현재 온도
+  // index 1 - 강수 확률
+  // index 2 - 습도 
+  // index 3 - 하늘 맑은 정도 
   late List<String> weatherNowList;
+
   late double tmn = -273.15;
   late double tmx = 1200;
 
