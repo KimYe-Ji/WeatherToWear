@@ -17,6 +17,8 @@ import 'package:alarm/alarm.dart';
 import 'package:flutter/services.dart';
 import 'package:alarm_example/screens/localpage.dart';
 import 'package:alarm_example/screens/home.dart';
+import 'package:alarm_example/screens/info_alarm.dart';
+
 
 // global variables
 Location currentLocation = new Location("default");
@@ -141,7 +143,7 @@ class _MyLocationState extends State<MyHomePage> {
           ElevatedButton(onPressed:() {
             Navigator.push(
               context, 
-              MaterialPageRoute(builder: (context) => ExampleAlarmHomeScreen()),  
+              MaterialPageRoute(builder: (context) => AlarmInfo()),  //임시로 알람 tts 화면 넘어가도록 설정
             );
           }, 
           child: Text("LocalPage"),
