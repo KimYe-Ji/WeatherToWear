@@ -237,7 +237,7 @@ class _MyLocationState extends State<MyHomePage> {
               // to alarm page
               Navigator.push(
               context, 
-              MaterialPageRoute(builder: (context) => ExampleAlarmHomeScreen()),  
+              MaterialPageRoute(builder: (context) => AlarmInfo()),  //ExampleAlarmHomeScreen()),  
               ),
             }, 
             icon: Icon(Icons.alarm), 

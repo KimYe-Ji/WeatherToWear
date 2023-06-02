@@ -20,7 +20,7 @@ class AlarmInfo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            height: 100,
+            height: 90,
           ),
           Text( //현위치 정보
             currentLocation.address, 
@@ -56,14 +56,14 @@ class AlarmInfo extends StatelessWidget {
                 "기온", 
                 style: TextStyle(
                   fontSize: 40, 
-                  //fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold
                   ),
               ),
               Container(
               width: 10,
               ),
               Text(
-                "23도", //currentLocation.tempList[0], 
+                "기온", //currentLocation.tempList[0], 
                 style: TextStyle(
                   fontSize: 40, 
                   fontWeight: FontWeight.bold
@@ -75,16 +75,88 @@ class AlarmInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "기온", 
+                "강수확률", 
                 style: TextStyle(
-                  fontSize: 40, 
+                  fontSize: 20, 
+                  fontWeight: FontWeight.bold
+                  ),
+              ),
+              Container(
+              width: 10,
+              ),
+              Text(
+                "강수확률", 
+                style: TextStyle(
+                  fontSize: 20, 
+                  fontWeight: FontWeight.bold
+                  ),
+              ),
+              Container(
+              width: 20,
+              ),
+              Text(
+                "습도", 
+                style: TextStyle(
+                  fontSize: 20, 
+                  fontWeight: FontWeight.bold
+                  ),
+              ),
+              Container(
+              width: 10,
+              ),
+              Text(
+                "습도", 
+                style: TextStyle(
+                  fontSize: 20, 
+                  fontWeight: FontWeight.bold
+                  ),
+              ),
+            ],
+          ),
+          Row( //강수확률(pop), 습도(reh), 최저기온(tmn), 최고기온(tmx) 추가 필요
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "최저기온", 
+                style: TextStyle(
+                  fontSize: 20, 
+                  fontWeight: FontWeight.bold
+                  ),
+              ),
+              Container(
+              width: 10,
+              ),
+              Text(
+                "최저기온", 
+                style: TextStyle(
+                  fontSize: 20, 
+                  fontWeight: FontWeight.bold
+                  ),
+              ),
+              Container(
+              width: 20,
+              ),
+              Text(
+                "최고기온", 
+                style: TextStyle(
+                  fontSize: 20, 
+                  fontWeight: FontWeight.bold
+                  ),
+              ),
+              Container(
+              width: 10,
+              ),
+              Text(
+                "최고기온", 
+                style: TextStyle(
+                  fontSize: 20, 
                   fontWeight: FontWeight.bold
                   ),
               ),
             ],
           ),
           Container(
-            height: 30,
+            height: 50,
           ),
           ElevatedButton( //알람 TTS 끄고 메인화면으로 이동
             onPressed: () {
@@ -94,9 +166,13 @@ class AlarmInfo extends StatelessWidget {
             );
             }, 
             child: Text('알람 끄기'),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.blue),//fromARGB(255, 101, 190, 235)),
+              foregroundColor: MaterialStateProperty.all(Colors.white),
+              ),
           ),
           Container(
-            height: 80,
+            height: 60,
           ),
           /*TextField(
             controller: controller,
