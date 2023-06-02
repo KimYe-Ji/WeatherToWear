@@ -19,6 +19,9 @@ import 'dart:async';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/services.dart';
 import 'package:alarm_example/screens/localpage.dart';
+import 'package:alarm_example/screens/home.dart';
+import 'package:alarm_example/screens/info_alarm.dart';
+
 
 // global variables
 Location currentLocation = new Location("default");
@@ -259,7 +262,6 @@ class _MyLocationState extends State<MyHomePage> {
                 child: getClothesContainer
               )
             ],
-          ),
         ]
       ),
       bottomNavigationBar: myNavigationbar,

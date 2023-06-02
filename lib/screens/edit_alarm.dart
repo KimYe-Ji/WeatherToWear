@@ -2,7 +2,7 @@ import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
-//home 화면에서 알람 설정 버튼을 눌렀을 경우 avigateToAlarmScreen에서 호출
+//home 화면에서 알람 설정 버튼을 눌렀을 경우 NavigateToAlarmScreen에서 호출
 class ExampleAlarmEditScreen extends StatefulWidget {
   final AlarmSettings? alarmSettings;
 
@@ -38,7 +38,6 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
       vibrate = true;
       showNotification = true;
       assetAudio = 'assets/무음.mp3';
-      //assetAudio 대신 tts 넣기
     } else {
       selectedTime = TimeOfDay(
         hour: widget.alarmSettings!.dateTime.hour,

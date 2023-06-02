@@ -1,13 +1,13 @@
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 
+//Alarm ringing screen
 class ExampleAlarmRingScreen extends StatelessWidget {
   final AlarmSettings alarmSettings;
 
   const ExampleAlarmRingScreen({Key? key, required this.alarmSettings})
       : super(key: key);
 
-  //알람이 울릴 때 화면, tts 및 날씨, 옷차림 정보 추가 필요 
   @override
   Widget build(BuildContext context) { 
     return Scaffold(

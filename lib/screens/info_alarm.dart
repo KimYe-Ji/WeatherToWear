@@ -2,14 +2,11 @@ import "package:alarm_example/main.dart";
 import "package:flutter/material.dart";
 import "package:flutter_tts/flutter_tts.dart";
 
-//메인화면의 날씨 정보를 받아오고, tts 정보 알려주기 
+//Alarm - TTS, Weather Info
 class AlarmInfo extends StatelessWidget {
   final FlutterTts tts = FlutterTts();
   final TextEditingController controller =
-      TextEditingController(text: 'Hello world'); //음성 변환 정보 들어가야하는 내용 
-
-  //final Location location = Location();
-  var ad = currentLocation.address;
+      TextEditingController(text: 'Hello world'); //음성 변환 정보 들어가야하는 내용
 
   AlarmInfo() {
     tts.setLanguage('kr');
@@ -17,29 +14,65 @@ class AlarmInfo extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) { //UI 구현 메인화면 참고해서 
+  Widget build(BuildContext context) { //UI 구현 메인화면 참고
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(
-            currentLocation.address,
+          Container(
+            height: 100,
+          ),
+          Text( //현위치 정보
+            currentLocation.address, 
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 50,
-              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              //fontWeight: FontWeight.bold,
             ),
           ),
-          Icon(
-            Icons.sunny,
+          Container(
+            height: 30,
           ),
-          Expanded(
+          Icon( //날씨에 따른 아이콘 정보 *switch case 구현 필요
+            Icons.sunny,
+            size: 170,
+            color: Colors.red,
+          ),
+          Container(
+            height: 10,
+          ),
+          Expanded( //옷차림 정보
             child: Image(
               image : AssetImage('assets/image/cloth_example.png'),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Container(
+            height: 20,
+          ),
+          Row( //기온
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "기온", 
+                style: TextStyle(
+                  fontSize: 40, 
+                  //fontWeight: FontWeight.bold
+                  ),
+              ),
+              Container(
+              width: 10,
+              ),
+              Text(
+                "23도", //currentLocation.tempList[0], 
+                style: TextStyle(
+                  fontSize: 40, 
+                  fontWeight: FontWeight.bold
+                  ),
+              ),
+            ],
+          ),
+          Row( //강수확률(pop), 습도(reh), 최저기온(tmn), 최고기온(tmx) 추가 필요
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "기온", 
@@ -50,23 +83,20 @@ class AlarmInfo extends StatelessWidget {
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                "기온", 
-                style: TextStyle(
-                  fontSize: 40, 
-                  fontWeight: FontWeight.bold
-                  ),
-              ),
-            ],
+          Container(
+            height: 30,
           ),
-          ElevatedButton(
+          ElevatedButton( //알람 TTS 끄고 메인화면으로 이동
             onPressed: () {
-              print("Turn off");
+              Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context) => MyApp()),  
+            );
             }, 
             child: Text('알람 끄기'),
+          ),
+          Container(
+            height: 80,
           ),
           /*TextField(
             controller: controller,
