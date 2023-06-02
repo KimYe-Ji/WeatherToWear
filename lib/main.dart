@@ -262,6 +262,7 @@ class _MyLocationState extends State<MyHomePage> {
                 child: getClothesContainer
               )
             ],
+          )
         ]
       ),
       bottomNavigationBar: myNavigationbar,
