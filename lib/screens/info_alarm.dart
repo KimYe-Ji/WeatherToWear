@@ -19,27 +19,51 @@ class AlarmInfo extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          Container(
+            height: 100,
+          ),
           Text( //현위치 정보
             currentLocation.address, 
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 50,
+              fontSize: 20,
               //fontWeight: FontWeight.bold,
             ),
           ),
+          Container(
+            height: 30,
+          ),
           Icon( //날씨에 따른 아이콘 정보 *switch case 구현 필요
             Icons.sunny,
+            size: 170,
+            color: Colors.red,
+          ),
+          Container(
+            height: 10,
           ),
           Expanded( //옷차림 정보
             child: Image(
               image : AssetImage('assets/image/cloth_example.png'),
             ),
           ),
+          Container(
+            height: 20,
+          ),
           Row( //기온
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "기온", 
+                style: TextStyle(
+                  fontSize: 40, 
+                  //fontWeight: FontWeight.bold
+                  ),
+              ),
+              Container(
+              width: 10,
+              ),
+              Text(
+                "23도", //currentLocation.tempList[0], 
                 style: TextStyle(
                   fontSize: 40, 
                   fontWeight: FontWeight.bold
@@ -48,7 +72,7 @@ class AlarmInfo extends StatelessWidget {
             ],
           ),
           Row( //강수확률(pop), 습도(reh), 최저기온(tmn), 최고기온(tmx) 추가 필요
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "기온", 
@@ -59,11 +83,20 @@ class AlarmInfo extends StatelessWidget {
               ),
             ],
           ),
-          ElevatedButton( //알람 TTS 끄고 메인화면으로 이동 필요
+          Container(
+            height: 30,
+          ),
+          ElevatedButton( //알람 TTS 끄고 메인화면으로 이동
             onPressed: () {
-              print("Turn off");
+              Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context) => MyApp()),  
+            );
             }, 
             child: Text('알람 끄기'),
+          ),
+          Container(
+            height: 80,
           ),
           /*TextField(
             controller: controller,
