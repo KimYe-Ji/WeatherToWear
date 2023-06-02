@@ -15,6 +15,8 @@ import 'dart:async';
 //import 'package:alarm_example/screens/home.dart';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/services.dart';
+import 'package:alarm_example/screens/localpage.dart';
+import 'package:alarm_example/screens/home.dart';
 
 // global variables
 Location currentLocation = new Location("default");
@@ -129,41 +131,22 @@ class _MyLocationState extends State<MyHomePage> {
       appBar: AppBar(),
       body: Column(
         children: <Widget> [
-          IconButton(onPressed:_setCurrentAddress, icon: Icon(Icons.my_location)), 
-          Text(txt)
-        ]
-      ), 
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home), 
-            label: "메인",
-            backgroundColor: Colors.lightGreen,
+          Row(
+            children: <Widget>[
+              IconButton(onPressed:_setCurrentAddress, icon: Icon(Icons.my_location)), 
+              Text(txt)
+            ],
           ), 
-          BottomNavigationBarItem(
-            icon: Icon(Icons.timeline),
-            label: "시간별", 
-            backgroundColor: Colors.lightGreen,
+          // 날씨 / 옷
+          ElevatedButton(onPressed:() {
+            Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context) => ExampleAlarmHomeScreen()),  
+            );
+          }, 
+          child: Text("LocalPage"),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite), 
-            label: "즐겨찾기", 
-            backgroundColor: Colors.lightGreen,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.alarm), 
-            label: "알람", 
-            backgroundColor: Colors.lightGreen,
-          ),   
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.cyan,
-        onTap: (value) {
-          setState(() {
-            _selectedIndex = value;
-          });
-        },
-        type: BottomNavigationBarType.fixed,
+        ]
       ),
     );
   }

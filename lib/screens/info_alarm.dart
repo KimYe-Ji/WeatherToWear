@@ -24,7 +24,7 @@ class AlarmInfo extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 50,
-              fontWeight: FontWeight.bold,
+              //fontWeight: FontWeight.bold,
             ),
           ),
           Icon( //날씨에 따른 아이콘 정보 *switch case 구현 필요
