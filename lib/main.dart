@@ -7,6 +7,7 @@ import 'dart:io';
 
 import 'package:alarm_example/models/clothes.dart';
 import 'package:alarm_example/models/location.dart';
+import 'package:alarm_example/models/translator.dart';
 // import 'package:flutter_application_1/models/weather.dart';
 import 'package:alarm_example/models/weatherAPI.dart';
 import 'package:geolocator/geolocator.dart';
@@ -144,8 +145,6 @@ class _MyLocationState extends State<MyHomePage> {
 
     // 현재: 10초 delay로 강제 해결
     Future.delayed(time, printAddress);
-
-    
   }
 
   @override
@@ -160,14 +159,76 @@ class _MyLocationState extends State<MyHomePage> {
       ),
     ); 
 
+    // widget - 날씨 아이콘
+    Widget getWeatherIcon() {
+      Icon icon = new Icon(
+        Icons.error, 
+        size: 100,
+        );
+
+      try {
+        String sky =Translator(currentLocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]);
+        print(sky);
+        switch(sky) {
+          case "맑음":
+            icon = new Icon(
+              Icons.wb_sunny_outlined, 
+              color: Colors.red,
+              size: 100,
+              );
+            break;
+          case "구름 많음":
+            icon = new Icon(
+              Icons.wb_cloudy_outlined, 
+              color: Colors.grey[400],
+              size: 100,
+              );
+            break;
+          case "흐림":
+            icon = new Icon(
+              Icons.wb_cloudy_rounded, 
+              color: Colors.grey[700],
+              size: 100,
+              );
+            break;
+        }
+      } catch(exception) {
+        print("error");
+      }
+
+      return icon;
+    }
+
     // 현재 날씨 Container
     Widget getWeatherContainer = Container(
+      margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            Icons.sunny, 
-            size: 20,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              getWeatherIcon(),
+              Column(
+                children: [
+                  Text(
+            "현재 온도: $txt2"
+          ), 
+          Text(
+            "최고 기온: ${currentLocation.tmx}", 
+            style: TextStyle(
+              color: Colors.red,
+            ),
           ),
+          Text(
+            "최저 기온: ${currentLocation.tmn}",
+            style: TextStyle(
+              color: Colors.lightBlueAccent,))  
+                ],
+              )
+            ],
+          ), 
           Text(
             "현재 온도: $txt2"
           ), 
@@ -182,23 +243,24 @@ class _MyLocationState extends State<MyHomePage> {
             style: TextStyle(
               color: Colors.lightBlueAccent,
             ),
-                    ),
+          ),
         ],
       ),
     );
 
     // 옷 추천 Container
     Widget getClothesContainer = Container(
+      margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Text("오늘의 추천: ${clothes.getClothes()}"),
           Image.asset(
             // 상대 경로로 접근 불가
             "assets/image/cloth_example.png", 
-            width: 50,
-            height: 50,
             fit: BoxFit.fill,
           ),
-          Text("오늘의 추천: \n${clothes.getClothes()}")
         ]
       ),
     );
@@ -247,23 +309,13 @@ class _MyLocationState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget> [
           getLocationContainer, 
-          // 날씨 / 옷
-          Row(
-            children: <Widget>[
-              // 날씨
-              Expanded(
-                flex: 2,
-                child: getWeatherContainer,
-              ),
-              // 옷
-              Expanded(
-                flex: 2,
-                child: getClothesContainer
-              )
-            ],
-          ),
+          // 날씨
+          getWeatherContainer,
+          // 옷
+          getClothesContainer  
         ]
       ),
       bottomNavigationBar: myNavigationbar,
