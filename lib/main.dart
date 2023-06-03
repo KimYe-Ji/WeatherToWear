@@ -3,7 +3,11 @@
 // import 'dart:io';
 // import 'dart:html';
 // import 'package:flutter_application_1/models/convertion.dart';
+import 'dart:io';
+
+import 'package:alarm_example/models/clothes.dart';
 import 'package:alarm_example/models/location.dart';
+import 'package:alarm_example/models/translator.dart';
 // import 'package:flutter_application_1/models/weather.dart';
 import 'package:alarm_example/models/weatherAPI.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,12 +19,29 @@ import 'dart:async';
 //import 'package:alarm_example/screens/home.dart';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/services.dart';
-import 'package:alarm_example/screens/localpage.dart';
+import 'package:alarm_example/local/localPage.dart';
+import 'package:alarm_example/screens/home.dart';
+import 'package:alarm_example/screens/info_alarm.dart';
+import 'package:alarm_example/local/locationclass.dart';
+
 
 // global variables
 Location currentLocation = new Location("default");
+
 String today = DateFormat("yyyyMMdd").format(DateTime.now());
 String start = DateFormat("HHmm").format(DateTime.now());
+Clothes clothes = new Clothes(-273);
+
+//local page에 필요한 list들
+/*
+List<localLocation> _localLocations = [
+    localLocation(city: '서울', district: '강남구', latitude: 37.5172, longitude: 127.0473),
+    localLocation(city: '부산', district: '해운대구', latitude: 35.1586, longitude: 129.1639),
+    localLocation(city: '인천', district: '연수구', latitude: 37.5034, longitude: 126.7661),
+    // 미리 만들어둔 지역 리스트
+];
+List<localLocation> _favorites = [];
+*/
 
  Future<void> main() async {
   
@@ -30,6 +51,9 @@ String start = DateFormat("HHmm").format(DateTime.now());
   await Alarm.init(showDebugLogs: true);
   
   print("app startd: $today at $start");
+
+  // _getUserLocation();
+  
   runApp(const MyApp());
 }
 
@@ -40,6 +64,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Weather2Wear - main',
       theme: ThemeData(
         // This is the theme of your application.
@@ -72,50 +97,60 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyLocationState();
 }
 
-void _getUserLocation() async {
+Future<void> _getUserLocation() async {
   LocationPermission permission = await Geolocator.checkPermission();
 
   permission = await Geolocator.requestPermission();
   
   Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+  // print(position);
   
   // print(position);
-  currentLocation.setPosition(position);
-  currentLocation.getLocationAddr();
+  //currentLocation.setPosition(position);
+  //currentLocation.getLocationAddr();
 
   // call weatherAPI
   weatherAPI wapi = weatherAPI(today, position);
   wapi.init(currentLocation);
 
-  // test 
-  // sleep(const Duration(seconds:5));
+
 }
 
 class _MyLocationState extends State<MyHomePage> {
   String txt = "";
-  int _selectedIndex = 0;
+  String txt2 = "";
+
+  Duration time = Duration(seconds: 13);
+  
+  Clothes clothes = new Clothes(-273);
 
   @override
   void initState() {
     // TODO: implement initState
     txt = "현 위치";
+    txt2 = "모름";
+
     super.initState();
+
   }
 
   Future<void> _setCurrentAddress() async {
-    Duration time = Duration(seconds: 10);
-
     void printAddress() {
       setState(() {
-        txt = currentLocation.address;
-        print(txt);
 
         currentLocation.getTempList();
         currentLocation.getPopList();
         currentLocation.getRehList();
+        currentLocation.getSkyList();
         currentLocation.getTmn();
-        currentLocation.getTmx();
-    });
+        currentLocation.getTmx(); 
+
+        txt = currentLocation.address;
+        txt2 = currentLocation.weatherNowList[0];
+
+        print(txt);
+        print(txt2);
+      });
     }
 
     _getUserLocation();
@@ -126,27 +161,177 @@ class _MyLocationState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        children: <Widget> [
+    // 현위치 Container
+    Widget getLocationContainer = Container(
+      child: Row(
+        children: <Widget>[
+          IconButton(onPressed:_setCurrentAddress, icon: Icon(Icons.my_location)), 
+          Text(txt)
+        ]
+      ),
+    ); 
+
+    // widget - 날씨 아이콘
+    Widget getWeatherIcon() {
+      Icon icon = new Icon(
+        Icons.error, 
+        size: 100,
+        );
+
+      try {
+        String sky =Translator(currentLocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]);
+        print(sky);
+        switch(sky) {
+          case "맑음":
+            icon = new Icon(
+              Icons.wb_sunny_outlined, 
+              color: Colors.red,
+              size: 100,
+              );
+            break;
+          case "구름 많음":
+            icon = new Icon(
+              Icons.wb_cloudy_outlined, 
+              color: Colors.grey[400],
+              size: 100,
+              );
+            break;
+          case "흐림":
+            icon = new Icon(
+              Icons.wb_cloudy_rounded, 
+              color: Colors.grey[700],
+              size: 100,
+              );
+            break;
+        }
+      } catch(exception) {
+        print("error");
+      }
+
+      return icon;
+    }
+
+    // 현재 날씨 Container
+    Widget getWeatherContainer = Container(
+      margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Row(
-            children: <Widget>[
-              IconButton(onPressed:_setCurrentAddress, icon: Icon(Icons.my_location)), 
-              Text(txt)
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              getWeatherIcon(),
+              Column(
+                children: [
+                  Text(
+            "현재 온도: $txt2"
+          ), 
+          Text(
+            "최고 기온: ${currentLocation.tmx}", 
+            style: TextStyle(
+              color: Colors.red,
+            ),
+          ),
+          Text(
+            "최저 기온: ${currentLocation.tmn}",
+            style: TextStyle(
+              color: Colors.lightBlueAccent,))  
+                ],
+              )
             ],
           ), 
-          // 날씨 / 옷
-          ElevatedButton(onPressed:() {
-            Navigator.push(
-              context, 
-              MaterialPageRoute(builder: (context) => const LocalPage()),  
-            );
-          }, 
-          child: Text("LocalPage"),
+          Text(
+            "현재 온도: $txt2"
+          ), 
+          Text(
+            "최고 기온: ${currentLocation.tmx}", 
+            style: TextStyle(
+              color: Colors.red,
+            ),
+          ),
+          Text(
+            "최저 기온: ${currentLocation.tmn}",
+            style: TextStyle(
+              color: Colors.lightBlueAccent,
+            ),
+          ),
+        ],
+      ),
+    );
+
+    // 옷 추천 Container
+    Widget getClothesContainer = Container(
+      margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text("오늘의 추천: ${clothes.getClothes()}"),
+          Image.asset(
+            // 상대 경로로 접근 불가
+            "assets/image/cloth_example.png", 
+            fit: BoxFit.fill,
           ),
         ]
       ),
     );
+
+    // 자체 navigation bar
+    Widget myNavigationbar = Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [ 
+          IconButton(
+            onPressed: () => {
+              // to main page
+              
+            }, 
+            icon: Icon(Icons.home), 
+          ),
+          IconButton(
+            onPressed: () => {
+              // to timeline page
+              
+            }, 
+            icon: Icon(Icons.timeline), 
+          ), 
+          IconButton(
+            onPressed: () => {
+              // to location page
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => localPage()),  
+              )
+            }, 
+            icon: Icon(Icons.location_city), 
+          ), 
+          IconButton(
+            onPressed: () => {
+              // to alarm page
+
+            }, 
+            icon: Icon(Icons.alarm), 
+          )
+        ],
+      ),
+    );
+
+
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget> [
+          getLocationContainer, 
+          // 날씨
+          getWeatherContainer,
+          // 옷
+          getClothesContainer  
+        ]
+      ),
+      bottomNavigationBar: myNavigationbar,
+    );
   }
 }
+

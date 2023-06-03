@@ -59,6 +59,10 @@ flutter:
     - assets/mp3/star_wars.mp3
     - assets/mp3/무음.mp3
     - assets/image/cloth_example.png
+    - assets/image/chart.png
+    - assets/image/sunny.png
+    - assets/image/cloudy.png
+    - assets/image/cloud.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
