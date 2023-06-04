@@ -213,7 +213,7 @@ class weatherAPI {
     }
     print(time);
 
+    currentLocation.weatherNowList.clear();
     currentLocation.weatherNow(time);
-    print(currentLocation.weatherNowList);
   }
 }
