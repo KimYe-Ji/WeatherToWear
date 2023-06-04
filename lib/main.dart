@@ -19,9 +19,12 @@ import 'dart:async';
 //import 'package:alarm_example/screens/home.dart';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/services.dart';
-import 'package:alarm_example/screens/localpage.dart';
+import 'package:alarm_example/local/localPage.dart';
 import 'package:alarm_example/screens/home.dart';
 import 'package:alarm_example/screens/info_alarm.dart';
+import 'package:alarm_example/local/locationclass.dart';
+import 'package:alarm_example/screens/localpage.dart';
+
 
 
 // global variables
@@ -30,6 +33,7 @@ Location currentLocation = new Location("default");
 String today = DateFormat("yyyyMMdd").format(DateTime.now());
 String start = DateFormat("HHmm").format(DateTime.now());
 Clothes clothes = new Clothes(-273);
+
 
  Future<void> main() async {
   
@@ -94,7 +98,7 @@ class LoadingPageState extends State<LoadingPage> {
     
 
     Timer(
-      Duration(seconds:10), 
+      Duration(seconds:13), 
       () => Navigator.push(context, MaterialPageRoute(builder:(context)=>MyHomePage()))
     );
   }
@@ -146,8 +150,8 @@ Future<void> _getUserLocation() async {
   // print(position);
   
   // print(position);
-  currentLocation.setPosition(position);
-  currentLocation.getLocationAddr();
+  //currentLocation.setPosition(position);
+  //currentLocation.getLocationAddr();
 
   // call weatherAPI
   weatherAPI wapi = weatherAPI(today, position);
@@ -158,6 +162,9 @@ class _MyLocationState extends State<MyHomePage> {
   String txt = "";
   String txt2 = "";
 
+  String sky = "";
+  Translator translator = Translator(currentLocation.weatherNowList);
+
   Duration time = Duration(seconds: 13);
   
   Clothes clothes = Clothes(double.parse(currentLocation.weatherNowList[0]));
@@ -165,8 +172,11 @@ class _MyLocationState extends State<MyHomePage> {
   @override
   void initState() {
     // TODO: implement initState
+
     txt = currentLocation.address;
     txt2 = currentLocation.weatherNowList[0];
+    sky = translator.isSunny(currentLocation.weatherNowList[3]);
+
 
     super.initState();
 
@@ -186,8 +196,11 @@ class _MyLocationState extends State<MyHomePage> {
         txt = currentLocation.address;
         txt2 = currentLocation.weatherNowList[0];
 
+        sky = translator.isSunny(currentLocation.weatherNowList[3]);
+
         print(txt);
         print(txt2);
+        print(sky);
       });
     }
 
@@ -204,6 +217,7 @@ class _MyLocationState extends State<MyHomePage> {
       child: Row(
         children: <Widget>[
           IconButton(onPressed:_setCurrentAddress, icon: Icon(Icons.my_location)), 
+
           Text(
             txt, 
             style: TextStyle(
@@ -223,9 +237,12 @@ class _MyLocationState extends State<MyHomePage> {
         size: 100,
         );
 
+
+      Future.delayed(Duration(seconds: 3));
+
       try {
-        String sky =Translator(currentLocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]);
-        print(sky);
+        sky = Translator(currentLocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]);
+        print("test: " + sky);
         switch(sky) {
           case "맑음":
             icon = new Icon(
@@ -270,6 +287,7 @@ class _MyLocationState extends State<MyHomePage> {
               Column(
                 children: [
                   Text(
+
                     "현재 온도: $txt2", 
                     style: TextStyle(
                       fontSize: 20, 
@@ -404,3 +422,4 @@ class _MyLocationState extends State<MyHomePage> {
     );
   }
 }
+

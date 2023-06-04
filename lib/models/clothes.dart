@@ -2,6 +2,7 @@ class Clothes {
   double temp = -273;
   String imgPath = "assets/image/";
 
+
   Clothes(double t) {
     this.temp = t;
   }
