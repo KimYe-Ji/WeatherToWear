@@ -30,7 +30,7 @@ class AlarmInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-  
+  String path = '';
   tts.setLanguage('kr');
   tts.setSpeechRate(0.4);
   tts.setPitch(0.9);
@@ -40,25 +40,18 @@ class AlarmInfo extends StatelessWidget {
   Translator sky = new Translator(currentLocation.weatherNowList);
         switch(sky.isSunny(currentLocation.weatherNowList[3])) {
           case "맑음":
-            icon = new Icon(
-              Icons.sunny, 
-              color: Colors.red,
-              size: 170,
-              );
+            // icon = new Icon(
+            //   Icons.sunny, 
+            //   color: Colors.red,
+            //   size: 170,
+            //   );
+            path = 'assets/image/sunny.png';
             break;
           case "구름 많음":
-            icon = new Icon(
-              Icons.wb_cloudy, 
-              color: Colors.grey[400],
-              size: 170,
-              );
+            path = 'assets/image/cloudy.png';
             break;
           case "흐림":
-            icon = new Icon(
-              Icons.wb_cloudy_rounded, 
-              color: Colors.grey[700],
-              size: 170,
-              );
+            path = 'assets/image/cloud.png';
             break;
         }
 
@@ -81,7 +74,13 @@ class AlarmInfo extends StatelessWidget {
           Container(
             height: 30,
           ),
-          icon,
+          //icon, 
+          //image for weather
+          Expanded( //옷차림 정보
+            child: Image(
+              image : AssetImage(path),
+            ),
+          ),
           Container(
             height: 10,
           ),
@@ -94,7 +93,7 @@ class AlarmInfo extends StatelessWidget {
             height: 20,
           ),
           Text(
-                "기온 ${currentLocation.weatherNowList[0]}°C", 
+                "${currentLocation.weatherNowList[0]}°C ${sky.isSunny(currentLocation.weatherNowList[3])}", 
                 style: TextStyle(
                   fontSize: 40, 
                   fontWeight: FontWeight.bold
@@ -110,7 +109,7 @@ class AlarmInfo extends StatelessWidget {
                 "강수확률  ${sky.rainPercent(currentLocation.weatherNowList[1])}", 
                 style: TextStyle(
                   fontSize: 20, 
-                  fontWeight: FontWeight.bold
+                  //fontWeight: FontWeight.bold
                   ),
               ),
               Container(
@@ -120,7 +119,7 @@ class AlarmInfo extends StatelessWidget {
                 "습도  ${currentLocation.weatherNowList[2]}%", 
                 style: TextStyle(
                   fontSize: 20, 
-                  fontWeight: FontWeight.bold
+                  //fontWeight: FontWeight.bold
                   ),
               ),
             ],
@@ -132,7 +131,7 @@ class AlarmInfo extends StatelessWidget {
                 "최저 기온 ${currentLocation.tmn}°C",
                 style: TextStyle(
                   fontSize: 20, 
-                  fontWeight: FontWeight.bold
+                  //fontWeight: FontWeight.bold
                   ),
               ),
               Container(
@@ -142,7 +141,7 @@ class AlarmInfo extends StatelessWidget {
                 "최고 기온 ${currentLocation.tmx}°C", 
                 style: TextStyle(
                   fontSize: 20, 
-                  fontWeight: FontWeight.bold
+                  //fontWeight: FontWeight.bold
                   ),
               ),
             ],
@@ -173,7 +172,7 @@ class AlarmInfo extends StatelessWidget {
                   tts.pause();
                   Navigator.push(
                   context, 
-                  MaterialPageRoute(builder: (context) => MyApp()),  
+                  MaterialPageRoute(builder: (context) => MyHomePage()),  
                   );
                 }, 
                 child: Text('알람 끄기'),

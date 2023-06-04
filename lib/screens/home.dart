@@ -36,13 +36,21 @@ class _ExampleAlarmHomeScreenState extends State<ExampleAlarmHomeScreen> {
   }
 
   Future<void> navigateToRingScreen(AlarmSettings alarmSettings) async {
-    await Navigator.push(
+    /*await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) =>
-              AlarmInfo(alarmSettings: alarmSettings),
+              AlarmInfo(alarmSettings: alarmSettings), //status 오류
               //ExampleAlarmRingScreen(alarmSettings: alarmSettings),
         ));
+    loadAlarms();*/
+    
+    //Alarm info screen loading error 
+    Timer(
+      Duration(seconds: 2),
+      () => Navigator.push(context, MaterialPageRoute(builder: (context) =>
+              AlarmInfo(alarmSettings: alarmSettings)))
+    );
     loadAlarms();
   }
 

@@ -187,7 +187,7 @@ class weatherAPI {
 
   void init(Location location) async {
     currentLocation.weatherNowList.clear();
-    location.weatherNowList.clear();
+    
     
     print("TEST: ${currentLocation.weatherNowList}");
     print(url);
@@ -223,6 +223,7 @@ class weatherAPI {
     print('time ${time}');
     
     currentLocation.weatherNow(time);
+    location.weatherNowList.clear();
     location.weatherNow(time);
 
   }
