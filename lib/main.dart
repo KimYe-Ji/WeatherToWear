@@ -19,9 +19,12 @@ import 'dart:async';
 //import 'package:alarm_example/screens/home.dart';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/services.dart';
-import 'package:alarm_example/screens/localpage.dart';
+import 'package:alarm_example/local/localPage.dart';
 import 'package:alarm_example/screens/home.dart';
 import 'package:alarm_example/screens/info_alarm.dart';
+import 'package:alarm_example/local/locationclass.dart';
+import 'package:alarm_example/screens/localpage.dart';
+
 
 
 // global variables
@@ -30,6 +33,7 @@ Location currentLocation = new Location("default");
 String today = DateFormat("yyyyMMdd").format(DateTime.now());
 String start = DateFormat("HHmm").format(DateTime.now());
 Clothes clothes = new Clothes(-273);
+
 
  Future<void> main() async {
   
@@ -146,8 +150,8 @@ Future<void> _getUserLocation() async {
   // print(position);
   
   // print(position);
-  currentLocation.setPosition(position);
-  currentLocation.getLocationAddr();
+  //currentLocation.setPosition(position);
+  //currentLocation.getLocationAddr();
 
   // call weatherAPI
   weatherAPI wapi = weatherAPI(today, position);
@@ -157,6 +161,7 @@ Future<void> _getUserLocation() async {
 class _MyLocationState extends State<MyHomePage> {
   String txt = "";
   String txt2 = "";
+
   String sky = "";
   Translator translator = Translator(currentLocation.weatherNowList);
 
@@ -167,9 +172,11 @@ class _MyLocationState extends State<MyHomePage> {
   @override
   void initState() {
     // TODO: implement initState
+
     txt = currentLocation.address;
     txt2 = currentLocation.weatherNowList[0];
     sky = translator.isSunny(currentLocation.weatherNowList[3]);
+
 
     super.initState();
 
@@ -188,6 +195,7 @@ class _MyLocationState extends State<MyHomePage> {
 
         txt = currentLocation.address;
         txt2 = currentLocation.weatherNowList[0];
+
         sky = translator.isSunny(currentLocation.weatherNowList[3]);
 
         print(txt);
@@ -209,6 +217,7 @@ class _MyLocationState extends State<MyHomePage> {
       child: Row(
         children: <Widget>[
           IconButton(onPressed:_setCurrentAddress, icon: Icon(Icons.my_location)), 
+
           Text(
             txt, 
             style: TextStyle(
@@ -227,6 +236,7 @@ class _MyLocationState extends State<MyHomePage> {
         Icons.error, 
         size: 100,
         );
+
 
       Future.delayed(Duration(seconds: 3));
 
@@ -277,6 +287,7 @@ class _MyLocationState extends State<MyHomePage> {
               Column(
                 children: [
                   Text(
+
                     "현재 온도: $txt2", 
                     style: TextStyle(
                       fontSize: 20, 
@@ -411,3 +422,4 @@ class _MyLocationState extends State<MyHomePage> {
     );
   }
 }
+

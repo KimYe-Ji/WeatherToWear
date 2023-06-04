@@ -6,6 +6,7 @@ import 'dart:convert';
 class Location {
   // late: 값의 초기화를 뒤로 미룸 + null 사용 방지
   late Position position;
+  late double lat, lon;
   late String address;
   late List<Weather> tempList;
   late List<Weather> popList;
@@ -39,6 +40,41 @@ class Location {
     print(position);
   }
 
+  void setPosition2(double lat, double lon) {
+    this.lat = lat;
+    this.lon = lon;
+
+    print('${lat}, ${lon}');
+  }
+
+  void getLocationAddr2() async {
+    // 위도, 경도
+    var lat = this.lat;
+    var lon = this.lon;
+
+    // kakao api: REST
+    Uri kakaoUri = Uri.parse(
+        "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=$lon&y=$lat&input_coord=WGS84");
+    final String kakao_api = "48e1b9a10f747c23afbb5cbfd6de457c";
+
+    var kakaoAddr = await http
+        .get(kakaoUri, headers: {"Authorization": "KakaoAK $kakao_api"});
+    
+    // convert to json
+    var toJson = jsonDecode(kakaoAddr.body);
+
+    // parse json -> address
+    String addr = toJson["documents"][0]["address"]["region_1depth_name"] +
+        " " +
+        toJson["documents"][0]["address"]["region_2depth_name"];
+
+    // print(addr);
+    this.address = addr;
+
+    print("주소 변환: $address");
+  }
+
+
   // get address
   void getLocationAddr() async {
     // 위도, 경도
@@ -68,6 +104,9 @@ class Location {
 
     print("주소 변환: $address");
   }
+
+  
+
 
   // getters
   void getTempList() {
@@ -103,36 +142,31 @@ class Location {
 
   void weatherNow(var time) {
     // List<String> weatherNow = new List.empty(growable: true);
-    // weatherNowList.clear();
 
     for(Weather w in tempList) {
       if(w.fcsttime == time) {
         weatherNowList.add(w.fcstValue);
-        // print("1");
       }
     }
 
     for(Weather w in popList) {
       if(w.fcsttime == time) {
         weatherNowList.add(w.fcstValue);
-        // print("2");
       }
     }
 
     for(Weather w in rehList) {
       if(w.fcsttime == time) {
         weatherNowList.add(w.fcstValue);
-        // print("3");
       }
     }
 
     for(Weather w in skyList) {
       if(w.fcsttime == time) {
         weatherNowList.add(w.fcstValue);
-        // print("4");
       }
     }
-
     print("in location class : $weatherNowList");
   }
 }
+

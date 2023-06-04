@@ -187,6 +187,8 @@ class weatherAPI {
 
   void init(Location location) async {
     currentLocation.weatherNowList.clear();
+    location.weatherNowList.clear();
+    
     print("TEST: ${currentLocation.weatherNowList}");
     print(url);
     // call API
@@ -218,10 +220,10 @@ class weatherAPI {
     } else {
       time = "${time}00";
     }
-    print(time);
-
-    // currentLocation.weatherNowList.clear();
-
+    print('time ${time}');
+    
     currentLocation.weatherNow(time);
+    location.weatherNow(time);
+
   }
 }
