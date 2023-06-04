@@ -205,11 +205,15 @@ class _MyLocationState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    String path = 'assets/image/loading2.png';
+
     // 현위치 Container
     Widget getLocationContainer = Container(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          IconButton(onPressed:_setCurrentAddress, icon: Icon(Icons.my_location)), 
+          //IconButton(onPressed:_setCurrentAddress, icon: Icon(Icons.my_location)), 
           Text(
             txt, 
             style: TextStyle(
@@ -217,17 +221,19 @@ class _MyLocationState extends State<MyHomePage> {
               fontSize: 20, 
             ),
             softWrap: true,
-          )
+          ),
+          IconButton(onPressed:_setCurrentAddress, icon: Icon(Icons.my_location)), 
         ]
       ),
     ); 
 
     // widget - 날씨 아이콘
     Widget getWeatherIcon() {
-      Icon icon = new Icon(
-        Icons.error, 
-        size: 100,
-        );
+      // Icon icon = new Icon(
+      //   Icons.error, 
+      //   size: 100,
+      //   );
+      
 
       Future.delayed(Duration(seconds: 3));
 
@@ -236,84 +242,194 @@ class _MyLocationState extends State<MyHomePage> {
         print("test: " + sky);
         switch(sky) {
           case "맑음":
-            icon = new Icon(
-              Icons.wb_sunny_outlined, 
-              color: Colors.red,
-              size: 100,
-              );
+            // icon = new Icon(
+            //   Icons.sunny, 
+            //   color: Colors.red,
+            //   size: 170,
+            //   );
+            path = 'assets/image/sunny.png';
             break;
           case "구름 많음":
-            icon = new Icon(
-              Icons.wb_cloudy_outlined, 
-              color: Colors.grey[400],
-              size: 100,
-              );
+            path = 'assets/image/cloudy.png';
             break;
           case "흐림":
-            icon = new Icon(
-              Icons.wb_cloudy_rounded, 
-              color: Colors.grey[700],
-              size: 100,
-              );
+            path = 'assets/image/cloud.png';
             break;
         }
       } catch(exception) {
         print("error");
       }
 
-      return icon;
+      return Image.asset(
+                      path,
+                      width: 120,
+                      height: 120,
+      );
+    
     }
 
     // 현재 날씨 Container
     Widget getWeatherContainer = Container(
       margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        //crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            //mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               getWeatherIcon(),
               Column(
                 children: [
                   Text(
-                    "현재 온도: $txt2", 
+                    "$txt2°C", 
                     style: TextStyle(
-                      fontSize: 20, 
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold 
                     ),
                     textAlign: TextAlign.center,
-                  ), 
-                  Text(
-                    "최고 기온: ${currentLocation.tmx}", 
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 20
-                    ),
                   ),
                   Text(
-                    "최저 기온: ${currentLocation.tmn}",
+                    "$sky", 
                     style: TextStyle(
-                      color: Colors.lightBlueAccent,
-                      fontSize: 20
+                      fontSize: 30, 
                     ),
-                    textAlign: TextAlign.right,
+                    textAlign: TextAlign.center,
                   ),  
+                  // Text(
+                  //   "최고 기온: ${currentLocation.tmx}", 
+                  //   style: TextStyle(
+                  //     //color: Colors.red,
+                  //     fontSize: 20
+                  //   ),
+                  // ),
+                  // Text(
+                  //   "최저 기온: ${currentLocation.tmn}",
+                  //   style: TextStyle(
+                  //     //color: Colors.lightBlueAccent,
+                  //     fontSize: 20
+                  //   ),
+                  //   textAlign: TextAlign.right,
+                  // ),  
                 ],
               ), 
             ],
-          ), 
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                "비 올 확률 : ${currentLocation.weatherNowList[1]}%"
-              ),
-              Text(
-                "현재 습도 상태 : ${Translator(currentLocation.weatherNowList).getHumid(currentLocation.weatherNowList[2])}"
-              ) 
-            ],
           ),
+          Container(height: 40),
+          Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          '최저 기온',
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '${currentLocation.tmn}°C',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 20),
+                    Column(
+                      children: [
+                        Text(
+                          '최고 기온',
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '${currentLocation.tmx}°C',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 20),
+                    Column(
+                      children: [
+                        Text(
+                          '강수확률',
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          //'강수량',
+                          '${currentLocation.weatherNowList[1]}%',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 20),
+                    Column(
+                      children: [
+                        Text(
+                          '습도',
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          //'습도',
+                          '${currentLocation.weatherNowList[2]}%',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  ],
+                ), 
+          // Row(
+          //   //crossAxisAlignment: CrossAxisAlignment.stretch,
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     Text(
+          //           "최고 기온", 
+          //           style: TextStyle(
+          //             //color: Colors.red,
+          //             fontSize: 20
+          //           ),
+          //         ),
+          //         Text(
+          //           "최저 기온",
+          //           style: TextStyle(
+          //             //color: Colors.lightBlueAccent,
+          //             fontSize: 20
+          //           ),
+          //           textAlign: TextAlign.right,
+          //         ), 
+          //     Text(
+          //       "비 올 확률%"
+          //     ),
+          //     Text(
+          //       "현재 습도 상태"
+          //     ) 
+          //   ],
+          // ),
+          // Row(
+          //   //crossAxisAlignment: CrossAxisAlignment.stretch,
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     Text(
+          //           "${currentLocation.tmx}", 
+          //           style: TextStyle(
+          //             //color: Colors.red,
+          //             fontSize: 20
+          //           ),
+          //         ),
+          //         Text(
+          //           "${currentLocation.tmn}",
+          //           style: TextStyle(
+          //             //color: Colors.lightBlueAccent,
+          //             fontSize: 20
+          //           ),
+          //           textAlign: TextAlign.right,
+          //         ), 
+          //     Text(
+          //       "${currentLocation.weatherNowList[1]}%"
+          //     ),
+          //     Text(
+          //       "${Translator(currentLocation.weatherNowList).getHumid(currentLocation.weatherNowList[2])}"
+          //     ) 
+          //   ],
+          // ),
         ],
       ),
     );
@@ -323,18 +439,23 @@ class _MyLocationState extends State<MyHomePage> {
       margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        //crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            "오늘의 추천: \n${clothes.getClothes()}", 
+            "오늘의 추천 : ${clothes.getClothes()}", 
             style: TextStyle(
-              fontSize: 18
+              fontSize: 13
             ),
+          ),
+          Container(
+            height: 15,
           ),
           Image.asset(
             // 상대 경로로 접근 불가
             "${clothes.getImage()}", 
-            fit: BoxFit.fill,
+            //fit: BoxFit.fill,
+            width: 500,
+            height: 125,
           ),
         ]
       ),
@@ -342,6 +463,7 @@ class _MyLocationState extends State<MyHomePage> {
 
     // 자체 navigation bar
     Widget myNavigationbar = Container(
+      //color: Colors.blue,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [ 
@@ -350,8 +472,8 @@ class _MyLocationState extends State<MyHomePage> {
               // to main page
               
             }, 
-            icon: Icon(Icons.home), 
-            iconSize: 30,
+            icon: Icon(Icons.home, ), 
+            iconSize: 35,
           ),
           IconButton(
             onPressed: () => {
@@ -361,8 +483,8 @@ class _MyLocationState extends State<MyHomePage> {
                 MaterialPageRoute(builder: (context) => const LocalPage()),  
               )
             }, 
-            icon: Icon(Icons.timeline), 
-            iconSize: 30,
+            icon: Icon(Icons.timeline,), 
+            iconSize: 35,
           ), 
           IconButton(
             onPressed: () => {
@@ -372,8 +494,8 @@ class _MyLocationState extends State<MyHomePage> {
                 MaterialPageRoute(builder: (context) => localPage()),  
               )
             }, 
-            icon: Icon(Icons.location_city), 
-            iconSize: 30,
+            icon: Icon(Icons.map,), 
+            iconSize: 35,
           ), 
           IconButton(
             onPressed: () => {
@@ -384,9 +506,10 @@ class _MyLocationState extends State<MyHomePage> {
                 //MaterialPageRoute(builder: (context) => AlarmInfo()),    
               )
             }, 
-            icon: Icon(Icons.alarm), 
-            iconSize: 30,
-          )
+            icon: Icon(Icons.alarm, ), 
+            iconSize: 35,
+          ),
+          
         ],
       ),
     );
@@ -400,16 +523,41 @@ class _MyLocationState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget> [
           getLocationContainer, 
+          Container(
+            height: 20,
+          ),
           // 날씨
           getWeatherContainer,
           Container(
-            margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
-            width: 500,
-            child: Divider(color: Colors.lightBlue, thickness: 2.0),
+            height: 40,
+          ),
+          // Container(
+          //   margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
+          //   width: 500,
+          //   child: Divider(color: Colors.lightBlue, thickness: 2.0),
+          // ),
+          Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: Colors.grey[500],
+                  indent: 40,
+                  endIndent: 40,
+                ),
+          Container(
+            height: 40,
           ),
           // 옷
-          getClothesContainer  
-        ]
+          getClothesContainer,
+          Container(
+            height: 70,
+          ),
+          Divider(
+                  height: 1,
+                  thickness: 3,
+                  //color: Colors.grey[500],
+          ),  
+        ],
+        
       ),
       bottomNavigationBar: myNavigationbar,
     );

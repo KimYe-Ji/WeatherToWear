@@ -29,6 +29,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
   String humidity = '0'; // 습도
   String kangsu = '0'; // 강수량
   String addr = '';
+  String cody = '추천 코디 : ';
 
   Location modellocation = new Location('address');
 
@@ -94,12 +95,18 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
           break;
       }
     addr = modellocation.address;
-    ctmp = modellocation.weatherNowList[0]; // 현재 기온
-    suma = Translator(modellocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]); // 요약
-    humidity = modellocation.weatherNowList[2]; // 습도
-    kangsu = modellocation.weatherNowList[1]; // 강수량
-    clothicon = 'assets/${Clothes(double.parse(modellocation.weatherNowList[0])).getImage()}';
+    //ctmp = modellocation.weatherNowList[0]; // 현재 기온
+    ctmp = '19';
+    suma = '맑음';
+    humidity = '45';
+    kangsu = '0';
+    //suma = Translator(modellocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]); // 요약
+    //humidity = modellocation.weatherNowList[2]; // 습도
+    //kangsu = modellocation.weatherNowList[1]; // 강수량
+    //clothicon = Clothes(double.parse(modellocation.weatherNowList[0])).getImage();
+    clothicon = 'assets/image/img3.png';
     timeicon = 'assets/image/chart.png';
+    cody = '추천 코디 : 긴바지, 맨투맨, 얇은 가디건, 니트';
     } catch(exception) {
     print('에러 났자나... 접근 안되자나....');
     }
@@ -114,7 +121,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 40),
+                SizedBox(height: 20),
                 // 위치
                 Text(
                   addr,
@@ -158,7 +165,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
                       children: [
                         Text(
                           '최저 기온',
-                          style: TextStyle(fontSize: 13),
+                          style: TextStyle(fontSize: 15),
                         ),
                         Text(
                           '${modellocation.tmn}°C',
@@ -171,7 +178,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
                       children: [
                         Text(
                           '최고 기온',
-                          style: TextStyle(fontSize: 13),
+                          style: TextStyle(fontSize: 15),
                         ),
                         Text(
                           '${modellocation.tmx}°C',
@@ -184,7 +191,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
                       children: [
                         Text(
                           '강수확률',
-                          style: TextStyle(fontSize: 13),
+                          style: TextStyle(fontSize: 15),
                         ),
                         Text(
                           //'강수량',
@@ -198,7 +205,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
                       children: [
                         Text(
                           '습도',
-                          style: TextStyle(fontSize: 13),
+                          style: TextStyle(fontSize: 15),
                         ),
                         Text(
                           //'습도',
@@ -221,6 +228,8 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
                 ),
                 SizedBox(height: 30),
                 
+                Text(cody, style: TextStyle(fontSize: 15)),
+                SizedBox(height: 10),
                 // 옷사진
                 Image.asset(
                       clothicon,
@@ -250,6 +259,8 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
                       width: 400,
                       height: 100,
                 ),
+
+                SizedBox(height: 50),
               ],
             ),
           ),

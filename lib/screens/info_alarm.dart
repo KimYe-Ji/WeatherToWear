@@ -93,7 +93,7 @@ class AlarmInfo extends StatelessWidget {
             height: 20,
           ),
           Text(
-                "${currentLocation.weatherNowList[0]}°C ${currentLocation.weatherNowList[3]}", 
+                "${currentLocation.weatherNowList[0]}°C ${sky.isSunny(currentLocation.weatherNowList[3])}", 
                 style: TextStyle(
                   fontSize: 40, 
                   fontWeight: FontWeight.bold
@@ -109,7 +109,7 @@ class AlarmInfo extends StatelessWidget {
                 "강수확률  ${sky.rainPercent(currentLocation.weatherNowList[1])}", 
                 style: TextStyle(
                   fontSize: 20, 
-                  fontWeight: FontWeight.bold
+                  //fontWeight: FontWeight.bold
                   ),
               ),
               Container(
@@ -119,7 +119,7 @@ class AlarmInfo extends StatelessWidget {
                 "습도  ${currentLocation.weatherNowList[2]}%", 
                 style: TextStyle(
                   fontSize: 20, 
-                  fontWeight: FontWeight.bold
+                  //fontWeight: FontWeight.bold
                   ),
               ),
             ],
@@ -131,7 +131,7 @@ class AlarmInfo extends StatelessWidget {
                 "최저 기온 ${currentLocation.tmn}°C",
                 style: TextStyle(
                   fontSize: 20, 
-                  fontWeight: FontWeight.bold
+                  //fontWeight: FontWeight.bold
                   ),
               ),
               Container(
@@ -141,7 +141,7 @@ class AlarmInfo extends StatelessWidget {
                 "최고 기온 ${currentLocation.tmx}°C", 
                 style: TextStyle(
                   fontSize: 20, 
-                  fontWeight: FontWeight.bold
+                  //fontWeight: FontWeight.bold
                   ),
               ),
             ],
