@@ -100,6 +100,11 @@ double getTodayTmx(List<dynamic> weatherList) {
 }
 
 void sortCategory(Location location, List<dynamic> weatherList) {
+  location.tempList.clear();
+  location.rehList.clear();
+  location.skyList.clear();
+  location.popList.clear();
+  
   for(int i = 0; i < weatherList.length; i++) {
     switch(weatherList[i].category) {
       case "TMP":
@@ -181,6 +186,10 @@ class weatherAPI {
   }
 
   void init(Location location) async {
+    currentLocation.weatherNowList.clear();
+    location.weatherNowList.clear();
+    
+    print("TEST: ${currentLocation.weatherNowList}");
     print(url);
     // call API
     http.Response uriResponse = await http.get(Uri.parse(url));
@@ -212,14 +221,9 @@ class weatherAPI {
       time = "${time}00";
     }
     print('time ${time}');
-
-    currentLocation.weatherNowList.clear();
+    
     currentLocation.weatherNow(time);
-    location.weatherNowList.clear();
     location.weatherNow(time);
-    print('weatherNowList[0] ${location.weatherNowList[0]}');
-    print('weatherNowList[1] ${location.weatherNowList[1]}');
-    print('weatherNowList[2] ${location.weatherNowList[2]}');
-    print('weatherNowList[3] ${location.weatherNowList[3]}');
+
   }
 }

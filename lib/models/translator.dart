@@ -7,6 +7,7 @@ class Translator {
   }
 
   // 강수 확률 수치 -> "~%로 비가 올 예정"
+
   String rainPercent(String pop) {
     return "$pop%";
   }

@@ -54,10 +54,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/mp3/mozart.mp3
-    - assets/mp3/nokia.mp3
-    - assets/mp3/one_piece.mp3
-    - assets/mp3/star_wars.mp3
     - assets/mp3/무음.mp3
     - assets/image/cloth_example.png
     - assets/image/chart.png
@@ -65,6 +61,16 @@ flutter:
     - assets/image/cloudy.png
     - assets/image/cloud.png
     - assets/image/loading2.png
+    - assets/image/loading.png
+    - assets/image/img1.png
+    - assets/image/img2.png
+    - assets/image/img3.png
+    - assets/image/img4.png
+    - assets/image/img5.png
+    - assets/image/img6.png
+    - assets/image/img7.png
+    - assets/image/img8.png
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
