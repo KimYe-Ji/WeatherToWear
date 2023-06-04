@@ -94,7 +94,7 @@ class LoadingPageState extends State<LoadingPage> {
     
 
     Timer(
-      Duration(seconds:3), 
+      Duration(seconds:13), 
       () => Navigator.push(context, MaterialPageRoute(builder:(context)=>MyHomePage()))
     );
   }
@@ -157,6 +157,8 @@ Future<void> _getUserLocation() async {
 class _MyLocationState extends State<MyHomePage> {
   String txt = "";
   String txt2 = "";
+  String sky = "";
+  Translator translator = Translator(currentLocation.weatherNowList);
 
   Duration time = Duration(seconds: 13);
   
@@ -167,6 +169,7 @@ class _MyLocationState extends State<MyHomePage> {
     // TODO: implement initState
     txt = currentLocation.address;
     txt2 = currentLocation.weatherNowList[0];
+    sky = translator.isSunny(currentLocation.weatherNowList[3]);
 
     super.initState();
 
@@ -185,9 +188,11 @@ class _MyLocationState extends State<MyHomePage> {
 
         txt = currentLocation.address;
         txt2 = currentLocation.weatherNowList[0];
+        sky = translator.isSunny(currentLocation.weatherNowList[3]);
 
         print(txt);
         print(txt2);
+        print(sky);
       });
     }
 
@@ -223,9 +228,11 @@ class _MyLocationState extends State<MyHomePage> {
         size: 100,
         );
 
+      Future.delayed(Duration(seconds: 3));
+
       try {
-        String sky =Translator(currentLocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]);
-        print(sky);
+        sky = Translator(currentLocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]);
+        print("test: " + sky);
         switch(sky) {
           case "맑음":
             icon = new Icon(
@@ -367,7 +374,10 @@ class _MyLocationState extends State<MyHomePage> {
           IconButton(
             onPressed: () => {
               // to alarm page
-
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => const LocalPage()),  
+              )
             }, 
             icon: Icon(Icons.alarm), 
             iconSize: 30,
