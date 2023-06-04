@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
       // home: const MyHomePage(),
@@ -292,7 +292,7 @@ class _MyLocationState extends State<MyHomePage> {
                     textAlign: TextAlign.right,
                   ),  
                 ],
-              )
+              ), 
             ],
           ), 
           Column(
@@ -367,7 +367,11 @@ class _MyLocationState extends State<MyHomePage> {
           IconButton(
             onPressed: () => {
               // to alarm page
-
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => ExampleAlarmHomeScreen()),
+                //MaterialPageRoute(builder: (context) => AlarmInfo()),    
+              )
             }, 
             icon: Icon(Icons.alarm), 
             iconSize: 30,
