@@ -173,7 +173,7 @@ class AlarmInfo extends StatelessWidget {
                   tts.pause();
                   Navigator.push(
                   context, 
-                  MaterialPageRoute(builder: (context) => MyApp()),  
+                  MaterialPageRoute(builder: (context) => MyHomePage()),  
                   );
                 }, 
                 child: Text('알람 끄기'),

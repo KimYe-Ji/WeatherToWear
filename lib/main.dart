@@ -94,7 +94,7 @@ class LoadingPageState extends State<LoadingPage> {
     
 
     Timer(
-      Duration(seconds:3), 
+      Duration(seconds:10), 
       () => Navigator.push(context, MaterialPageRoute(builder:(context)=>MyHomePage()))
     );
   }
