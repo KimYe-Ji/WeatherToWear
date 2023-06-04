@@ -39,14 +39,42 @@ class Location {
     this.position = position;
 
     print(position);
-  }
-*/
+  }*/
+
   void setPosition2(double lat, double lon) {
     this.llat = lat;
     this.llon = lon;
 
     print('${llat}, ${llon}');
   }
+
+  void getLocationAddr2() async {
+    // 위도, 경도
+    var lat = this.llat;
+    var lon = this.llon;
+
+    // kakao api: REST
+    Uri kakaoUri = Uri.parse(
+        "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=$lon&y=$lat&input_coord=WGS84");
+    final String kakao_api = "48e1b9a10f747c23afbb5cbfd6de457c";
+
+    var kakaoAddr = await http
+        .get(kakaoUri, headers: {"Authorization": "KakaoAK $kakao_api"});
+    
+    // convert to json
+    var toJson = jsonDecode(kakaoAddr.body);
+
+    // parse json -> address
+    String addr = toJson["documents"][0]["address"]["region_1depth_name"] +
+        " " +
+        toJson["documents"][0]["address"]["region_2depth_name"];
+
+    // print(addr);
+    this.address = addr;
+
+    print("주소 변환: $address");
+  }
+
 
   // get address
   /*
@@ -79,35 +107,7 @@ class Location {
     print("주소 변환: $address");
   }
 */
-  void getLocationAddr2() async {
-    // 위도, 경도
-    var lat = this.llat;
-    var lon = this.llon;
-
-    // kakao api: REST
-    Uri kakaoUri = Uri.parse(
-        "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=$lon&y=$lat&input_coord=WGS84");
-    final String kakao_api = "48e1b9a10f747c23afbb5cbfd6de457c";
-
-    var kakaoAddr = await http
-        .get(kakaoUri, headers: {"Authorization": "KakaoAK $kakao_api"});
-    
-    // convert to json
-    var toJson = jsonDecode(kakaoAddr.body);
-
-    // parse json -> address
-    String addr = toJson["documents"][0]["address"]["region_1depth_name"] +
-        " " +
-        toJson["documents"][0]["address"]["region_2depth_name"] +
-        " " +
-        toJson["documents"][0]["address"]["region_3depth_name"];
-
-    // print(addr);
-    this.address = addr;
-
-    print("주소 변환: $address");
-  }
-
+  
 
 
   // getters

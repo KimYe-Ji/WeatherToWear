@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:alarm_example/local/locationclass.dart';
 import 'package:alarm_example/local/localUI.dart';
+import "package:alarm_example/main.dart";
 
 List<localLocation> _searchResults = [];
 List<localLocation> _favorites = [];
-
+ 
 class localPage extends StatefulWidget {
   @override
   _localPageState createState() => _localPageState();
@@ -14,12 +15,14 @@ class localPage extends StatefulWidget {
 
 class _localPageState extends State<localPage> {
   TextEditingController _searchController = TextEditingController();
+  
   List<localLocation> _localLocations = [
     localLocation(city: '서울', district: '강남구', latitude: 37.5172, longitude: 127.0473),
     localLocation(city: '부산', district: '해운대구', latitude: 35.1586, longitude: 129.1639),
     localLocation(city: '인천', district: '연수구', latitude: 37.5034, longitude: 126.7661),
     // 미리 만들어둔 지역 리스트
   ];
+  
   
 
   void searchlocalLocations(String query) async {
@@ -96,14 +99,10 @@ class _localPageState extends State<localPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'localLocation Search',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
+    
+
+    return Scaffold(
         appBar: AppBar(
-          title: Text('localLocation Search'),
         ),
         body: Column(
           children: [
@@ -174,7 +173,7 @@ class _localPageState extends State<localPage> {
                     trailing: IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () {
-                        // 즐겨찾기에서 지역을 제거합니다.
+                        // 즐겨찾기에서 지역을 제거
                         removeFromFavorites(localLocation);
                       },
                     ),
@@ -192,7 +191,7 @@ class _localPageState extends State<localPage> {
             ),
           ],
         ),
-      ),
-    );
+      );
+
   }
 }
