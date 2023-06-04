@@ -103,6 +103,7 @@ class Location {
 
   void weatherNow(var time) {
     // List<String> weatherNow = new List.empty(growable: true);
+    // weatherNowList.clear();
 
     for(Weather w in tempList) {
       if(w.fcsttime == time) {
@@ -131,5 +132,7 @@ class Location {
         // print("4");
       }
     }
+
+    print("in location class : $weatherNowList");
   }
 }
