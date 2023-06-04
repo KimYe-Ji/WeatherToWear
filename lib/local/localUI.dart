@@ -9,50 +9,61 @@ import 'package:alarm_example/main.dart';
 import 'package:alarm_example/models/translator.dart';
 //import 'package:geolocator/geolocator.dart';
 
+Future<void> _getmodelLocation(Location modellocation, localLocation location) async{
+  
+  modellocation.setPosition2(location.latitude, location.longitude);
+  modellocation.getLocationAddr2();
+
+  // call weatherAPI
+  weatherAPI localwapi = weatherAPI.weatherAPI2(today, location.longitude, location.latitude);
+  localwapi.init(modellocation);
+}
+  
+Future<void> _setmodelAddress(Location modellocation, localLocation location) async {
+  void printAddress() {
+
+      modellocation.getTempList();
+      modellocation.getPopList();
+      modellocation.getRehList();
+      modellocation.getSkyList();
+      modellocation.getTmn();
+      modellocation.getTmx(); 
+
+      print(modellocation.address);
+      print(modellocation.weatherNowList[0]);
+    };
+  
+
+    _getmodelLocation(modellocation, location);
+
+    // 현재: 10초 delay로 강제 해결
+    Future.delayed(Duration(seconds: 13), printAddress);
+}
+
+
 class localWeatherPage extends StatelessWidget {
   final localLocation location;
 
   localWeatherPage({required this.location}); // 매개변수가 꼭 전달되어야 함
 
-
-  //final String locationn = 'Seoul';
-  //final String summary = '맑음';
-  String icon = 'assets/sunny_icon.png'; // 아이콘 이미지 경로
-  /*
-  final double currentTemperature = 25.0;
-  final double minTemperature = 18.0;
-  final double maxTemperature = 28.0;
-  final int humidity = 70;
-  final double precipitation = 0.3;
-  */
-
+  String icon = 'assets/image/sunny.png'; // 아이콘 이미지 경로
 
   @override
   Widget build(BuildContext context) {
 
     //Location 객체 생성
     Location modellocation = new Location("${location.city} ${location.district}");
-    print("${modellocation.address}");
+    print("Location 객체 생성 ${modellocation.address}");
 
-    // weatherAPI 객체 생성 및 초기화
-    weatherAPI localwapi = weatherAPI.weatherAPI2(today, location.longitude, location.latitude);
-    localwapi.init(modellocation);
+    _setmodelAddress(modellocation, location);
 
-    //Position position = Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
-    //modellocation.setPosition(position);
-    modellocation.setPosition2(location.latitude, location.longitude);
-    modellocation.getLocationAddr2();
-    modellocation.getTempList();
-    modellocation.getPopList();
-    modellocation.getRehList();
-    modellocation.getSkyList();
-    modellocation.getTmn();
-    modellocation.getTmx();
-
+    print('setmodel 이후, translator 전');
+    
     Translator sky = new Translator(modellocation.weatherNowList);
       switch(sky.isSunny(modellocation.weatherNowList[3])) {
         case "맑음":
           icon = 'assets/image/sunny.png';
+          print('icon: ${icon}');
           break;
         case "구름 많음":
           icon = 'assets/image/cloudy.png';
@@ -60,7 +71,7 @@ class localWeatherPage extends StatelessWidget {
         case "흐림":
           icon = 'assets/image/cloud.png';
           break;
-      }
+    }
 
 
     return Scaffold(
@@ -100,9 +111,11 @@ class localWeatherPage extends StatelessWidget {
                       children: [
                         Text(
                           '${modellocation.weatherNowList[0]}°C',
+                          //'23도',
                           style: TextStyle(fontSize: 48),
                         ),
                         Text(
+                          //'맑음',
                           modellocation.weatherNowList[3],
                           style: TextStyle(fontSize: 22),
                         ),
@@ -149,6 +162,7 @@ class localWeatherPage extends StatelessWidget {
                           style: TextStyle(fontSize: 13),
                         ),
                         Text(
+                          //'강수량',
                           '${modellocation.weatherNowList[1]}mm',
                           style: TextStyle(fontSize: 13),
                         ),
@@ -162,6 +176,7 @@ class localWeatherPage extends StatelessWidget {
                           style: TextStyle(fontSize: 13),
                         ),
                         Text(
+                          //'습도',
                           '${modellocation.weatherNowList[2]}%',
                           style: TextStyle(fontSize: 13),
                         ),
@@ -183,7 +198,7 @@ class localWeatherPage extends StatelessWidget {
                 
                 // 옷사진
                 Image.asset(
-                      'assets/images/clothes.jpg',
+                      'assets/image/cloth_example.png',
                       width: 400,
                       height: 150,
                 ),
@@ -206,7 +221,7 @@ class localWeatherPage extends StatelessWidget {
 
                 // 시간별 기온 그래프
                 Image.asset(
-                      'assets/images/chart.png',
+                      'assets/image/chart.png',
                       width: 400,
                       height: 100,
                 ),
