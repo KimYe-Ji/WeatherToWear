@@ -21,9 +21,9 @@ class localWeatherPage extends StatefulWidget {
 }
 
 class _LocalWeatherPageState extends State<localWeatherPage> {
-  String sumaicon = 'assets/image/loading.png'; // 아이콘 이미지 경로
-  String clothicon = 'assets/image/loading.png';
-  String timeicon = 'assets/image/loading.png';
+  String sumaicon = 'assets/image/loading2.png'; // 아이콘 이미지 경로
+  String clothicon = 'assets/image/loading2.png';
+  String timeicon = 'assets/image/loading2.png';
   String ctmp = ''; // 현재 기온
   String suma = ''; // 날씨 요약
   String humidity = '0'; // 습도
