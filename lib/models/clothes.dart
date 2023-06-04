@@ -1,6 +1,6 @@
 class Clothes {
   double temp = -273;
-  String imgPath = "image";
+  String imgPath = "assets/image/";
 
   Clothes(double t) {
     this.temp = t;
@@ -34,21 +34,21 @@ class Clothes {
     String path = "";
 
     if(temp > 28.0) {
-      path = "cloth_example.png";
+      path = "img1.png";
     } else if(temp <= 28.0 && temp > 23.0) {
-      path = "cloth_example.png"; 
+      path = "img2.png"; 
     } else if(temp <= 23.0 && temp > 20.0) {
-      path = "cloth_example.png";
+      path = "img3.png";
     } else if(temp <= 20 && temp > 17) {
-      path = "cloth_example.png";
+      path = "img4.png";
     } else if(temp <= 17 && temp > 12) {
-      path = "cloth_example.png";
+      path = "img5.png";
     } else if(temp <= 12 && temp > 9) {
-      path = "cloth_example.png";
+      path = "img6.png";
     } else if(temp <=9 && temp > 5) {
-      path = "cloth_example.png";
+      path = "img7.png";
     } else {
-      path = "cloth_example.png";
+      path = "img8.png";
     }
     
     return imgPath+path;

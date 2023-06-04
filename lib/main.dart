@@ -38,6 +38,8 @@ Clothes clothes = new Clothes(-273);
 
   await Alarm.init(showDebugLogs: true);
   
+  await _getUserLocation();
+
   print("app startd: $today at $start");
 
   // _getUserLocation();
@@ -73,7 +75,57 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      // home: const MyHomePage(),
+      home: LoadingPage(),
+    );
+  }
+}
+
+class LoadingPage extends StatefulWidget {
+  @override
+  LoadingPageState createState() => LoadingPageState();
+}
+
+class LoadingPageState extends State<LoadingPage> {
+  @override
+  void initState() {
+    super.initState();
+    
+    
+
+    Timer(
+      Duration(seconds:3), 
+      () => Navigator.push(context, MaterialPageRoute(builder:(context)=>MyHomePage()))
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(image: AssetImage("assets/image/loading.png"), fit: BoxFit.fill), 
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            top: 0.0,
+            left: 0.0,
+            child: Container(
+              width: width,
+              height: height,
+              child: Scaffold(
+                backgroundColor: Colors.transparent,
+                body: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Center(),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -100,8 +152,6 @@ Future<void> _getUserLocation() async {
   // call weatherAPI
   weatherAPI wapi = weatherAPI(today, position);
   wapi.init(currentLocation);
-
-
 }
 
 class _MyLocationState extends State<MyHomePage> {
@@ -110,13 +160,13 @@ class _MyLocationState extends State<MyHomePage> {
 
   Duration time = Duration(seconds: 13);
   
-  Clothes clothes = new Clothes(-273);
+  Clothes clothes = Clothes(double.parse(currentLocation.weatherNowList[0]));
 
   @override
   void initState() {
     // TODO: implement initState
-    txt = "현 위치";
-    txt2 = "모름";
+    txt = currentLocation.address;
+    txt2 = currentLocation.weatherNowList[0];
 
     super.initState();
 
@@ -154,7 +204,14 @@ class _MyLocationState extends State<MyHomePage> {
       child: Row(
         children: <Widget>[
           IconButton(onPressed:_setCurrentAddress, icon: Icon(Icons.my_location)), 
-          Text(txt)
+          Text(
+            txt, 
+            style: TextStyle(
+              fontWeight: FontWeight.bold, 
+              fontSize: 20, 
+            ),
+            softWrap: true,
+          )
         ]
       ),
     ); 
@@ -213,36 +270,41 @@ class _MyLocationState extends State<MyHomePage> {
               Column(
                 children: [
                   Text(
-            "현재 온도: $txt2"
-          ), 
-          Text(
-            "최고 기온: ${currentLocation.tmx}", 
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          Text(
-            "최저 기온: ${currentLocation.tmn}",
-            style: TextStyle(
-              color: Colors.lightBlueAccent,))  
+                    "현재 온도: $txt2", 
+                    style: TextStyle(
+                      fontSize: 20, 
+                    ),
+                    textAlign: TextAlign.center,
+                  ), 
+                  Text(
+                    "최고 기온: ${currentLocation.tmx}", 
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 20
+                    ),
+                  ),
+                  Text(
+                    "최저 기온: ${currentLocation.tmn}",
+                    style: TextStyle(
+                      color: Colors.lightBlueAccent,
+                      fontSize: 20
+                    ),
+                    textAlign: TextAlign.right,
+                  ),  
                 ],
               )
             ],
           ), 
-          Text(
-            "현재 온도: $txt2"
-          ), 
-          Text(
-            "최고 기온: ${currentLocation.tmx}", 
-            style: TextStyle(
-              color: Colors.red,
-            ),
-          ),
-          Text(
-            "최저 기온: ${currentLocation.tmn}",
-            style: TextStyle(
-              color: Colors.lightBlueAccent,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                "비 올 확률 : ${currentLocation.weatherNowList[1]}%"
+              ),
+              Text(
+                "현재 습도 상태 : ${Translator(currentLocation.weatherNowList).getHumid(currentLocation.weatherNowList[2])}"
+              ) 
+            ],
           ),
         ],
       ),
@@ -255,10 +317,15 @@ class _MyLocationState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text("오늘의 추천: ${clothes.getClothes()}"),
+          Text(
+            "오늘의 추천: \n${clothes.getClothes()}", 
+            style: TextStyle(
+              fontSize: 18
+            ),
+          ),
           Image.asset(
             // 상대 경로로 접근 불가
-            "assets/image/cloth_example.png", 
+            "${clothes.getImage()}", 
             fit: BoxFit.fill,
           ),
         ]
@@ -276,6 +343,7 @@ class _MyLocationState extends State<MyHomePage> {
               
             }, 
             icon: Icon(Icons.home), 
+            iconSize: 30,
           ),
           IconButton(
             onPressed: () => {
@@ -286,6 +354,7 @@ class _MyLocationState extends State<MyHomePage> {
               )
             }, 
             icon: Icon(Icons.timeline), 
+            iconSize: 30,
           ), 
           IconButton(
             onPressed: () => {
@@ -293,6 +362,7 @@ class _MyLocationState extends State<MyHomePage> {
 
             }, 
             icon: Icon(Icons.location_city), 
+            iconSize: 30,
           ), 
           IconButton(
             onPressed: () => {
@@ -300,6 +370,7 @@ class _MyLocationState extends State<MyHomePage> {
 
             }, 
             icon: Icon(Icons.alarm), 
+            iconSize: 30,
           )
         ],
       ),
@@ -307,13 +378,20 @@ class _MyLocationState extends State<MyHomePage> {
 
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget> [
           getLocationContainer, 
           // 날씨
           getWeatherContainer,
+          Container(
+            margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
+            width: 500,
+            child: Divider(color: Colors.lightBlue, thickness: 2.0),
+          ),
           // 옷
           getClothesContainer  
         ]
