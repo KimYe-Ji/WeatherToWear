@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:alarm/alarm.dart';
 import 'package:alarm_example/screens/edit_alarm.dart';
-import 'package:alarm_example/screens/ring.dart';
+import 'package:alarm_example/screens/info_alarm.dart';
 import 'package:alarm_example/models/tile_alarm.dart';
 import 'package:flutter/material.dart';
 
+//Main Screen of Alarm Feature
 class ExampleAlarmHomeScreen extends StatefulWidget {
   const ExampleAlarmHomeScreen({Key? key}) : super(key: key);
 
@@ -39,7 +40,8 @@ class _ExampleAlarmHomeScreenState extends State<ExampleAlarmHomeScreen> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              ExampleAlarmRingScreen(alarmSettings: alarmSettings),
+              AlarmInfo(alarmSettings: alarmSettings),
+              //ExampleAlarmRingScreen(alarmSettings: alarmSettings),
         ));
     loadAlarms();
   }
@@ -70,7 +72,7 @@ class _ExampleAlarmHomeScreenState extends State<ExampleAlarmHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(title: const Text('Package alarm example app')),
+      appBar: AppBar(),
       //debugShowCheckedModeBanner: false,
       body: SafeArea(
         child: alarms.isNotEmpty

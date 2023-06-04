@@ -23,11 +23,11 @@ class localWeatherPage extends StatefulWidget {
 class _LocalWeatherPageState extends State<localWeatherPage> {
   String sumaicon = 'assets/image/loading.png'; // 아이콘 이미지 경로
   String clothicon = 'assets/image/loading.png';
-  //String timeicon = 'assets/image/loading.png';
+  String timeicon = 'assets/image/loading.png';
   String ctmp = ''; // 현재 기온
   String suma = ''; // 날씨 요약
-  String humidity = ''; // 습도
-  String kangsu = ''; // 강수량
+  String humidity = '0'; // 습도
+  String kangsu = '0'; // 강수량
   String addr = '';
 
   Location modellocation = new Location('address');
@@ -99,6 +99,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
     humidity = modellocation.weatherNowList[2]; // 습도
     kangsu = modellocation.weatherNowList[1]; // 강수량
     clothicon = 'assets/${Clothes(double.parse(modellocation.weatherNowList[0])).getImage()}';
+    timeicon = 'assets/image/chart.png';
     } catch(exception) {
     print('에러 났자나... 접근 안되자나....');
     }
@@ -182,12 +183,12 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
                     Column(
                       children: [
                         Text(
-                          '강수량',
+                          '강수확률',
                           style: TextStyle(fontSize: 13),
                         ),
                         Text(
                           //'강수량',
-                          '${kangsu}mm',
+                          '${kangsu}%',
                           style: TextStyle(fontSize: 13),
                         ),
                       ],
@@ -245,7 +246,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
 
                 // 시간별 기온 그래프
                 Image.asset(
-                      'assets/image/chart.png',
+                      timeicon,
                       width: 400,
                       height: 100,
                 ),

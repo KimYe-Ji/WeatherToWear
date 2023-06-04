@@ -20,8 +20,8 @@ class Location {
   // index 3 - 하늘 맑은 정도 
   late List<String> weatherNowList;
 
-  late double tmn = 0;
-  late double tmx = 0;
+  late double tmn = -273.15;
+  late double tmx = 1200;
 
   // constructor
   Location(String address) {
