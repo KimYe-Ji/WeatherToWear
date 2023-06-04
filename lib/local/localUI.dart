@@ -98,7 +98,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
     suma = Translator(modellocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]); // 요약
     humidity = modellocation.weatherNowList[2]; // 습도
     kangsu = modellocation.weatherNowList[1]; // 강수량
-    clothicon = 'assets/${Clothes(double.parse(modellocation.weatherNowList[0])).getImage()}';
+    clothicon = Clothes(double.parse(modellocation.weatherNowList[0])).getImage();
     timeicon = 'assets/image/chart.png';
     } catch(exception) {
     print('에러 났자나... 접근 안되자나....');
