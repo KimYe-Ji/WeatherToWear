@@ -95,6 +95,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
           break;
       }
     addr = modellocation.address;
+
     //ctmp = modellocation.weatherNowList[0]; // 현재 기온
     ctmp = '19';
     suma = '맑음';
@@ -105,6 +106,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
     //kangsu = modellocation.weatherNowList[1]; // 강수량
     //clothicon = Clothes(double.parse(modellocation.weatherNowList[0])).getImage();
     clothicon = 'assets/image/img3.png';
+
     timeicon = 'assets/image/chart.png';
     cody = '추천 코디 : 긴바지, 맨투맨, 얇은 가디건, 니트';
     } catch(exception) {
