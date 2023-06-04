@@ -20,8 +20,8 @@ class Location {
   // index 3 - 하늘 맑은 정도 
   late List<String> weatherNowList;
 
-  late double tmn = 0;
-  late double tmx = 0;
+  late double tmn = -273.15;
+  late double tmx = 1200;
 
   // constructor
   Location(String address) {
@@ -146,29 +146,27 @@ class Location {
     for(Weather w in tempList) {
       if(w.fcsttime == time) {
         weatherNowList.add(w.fcstValue);
-        print("1");
       }
     }
 
     for(Weather w in popList) {
       if(w.fcsttime == time) {
         weatherNowList.add(w.fcstValue);
-        print("2");
       }
     }
 
     for(Weather w in rehList) {
       if(w.fcsttime == time) {
         weatherNowList.add(w.fcstValue);
-        print("3");
       }
     }
 
     for(Weather w in skyList) {
       if(w.fcsttime == time) {
         weatherNowList.add(w.fcstValue);
-        print("4");
       }
     }
+    print("in location class : $weatherNowList");
   }
 }
+
