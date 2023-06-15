@@ -95,18 +95,18 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
           break;
       }
     addr = modellocation.address;
-    //ctmp = modellocation.weatherNowList[0]; // 현재 기온
-    ctmp = '19';
-    suma = '맑음';
-    humidity = '45';
-    kangsu = '0';
-    //suma = Translator(modellocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]); // 요약
-    //humidity = modellocation.weatherNowList[2]; // 습도
-    //kangsu = modellocation.weatherNowList[1]; // 강수량
+    ctmp = modellocation.weatherNowList[0]; // 현재 기온
+    // ctmp = '19';
+    // suma = '맑음';
+    // humidity = '45';
+    // kangsu = '0';
+    suma = Translator(modellocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]); // 요약
+    humidity = modellocation.weatherNowList[2]; // 습도
+    kangsu = modellocation.weatherNowList[1]; // 강수량
     //clothicon = Clothes(double.parse(modellocation.weatherNowList[0])).getImage();
     clothicon = 'assets/image/img3.png';
     timeicon = 'assets/image/chart.png';
-    cody = '추천 코디 : 긴바지, 맨투맨, 얇은 가디건, 니트';
+    // cody = '추천 코디 : 긴바지, 맨투맨, 얇은 가디건, 니트';
     } catch(exception) {
     print('에러 났자나... 접근 안되자나....');
     }

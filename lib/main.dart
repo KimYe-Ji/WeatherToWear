@@ -75,6 +75,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
+        fontFamily: 'NanumSquareNeo',
       ),
       // home: const MyHomePage(),
       home: LoadingPage(),
@@ -146,7 +147,7 @@ Future<void> _getUserLocation() async {
   Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
   // print(position);
   
-  // print(position);
+  print("_getUserLocation 내: $position");
   currentLocation.setPosition(position);
   currentLocation.getLocationAddr();
 
@@ -214,15 +215,18 @@ class _MyLocationState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           //IconButton(onPressed:_setCurrentAddress, icon: Icon(Icons.my_location)), 
+          Container(
+            width: 20,
+          ),
           Text(
             txt, 
             style: TextStyle(
               fontWeight: FontWeight.bold, 
-              fontSize: 20, 
+              fontSize: 16, 
             ),
             softWrap: true,
           ),
-          IconButton(onPressed:_setCurrentAddress, icon: Icon(Icons.my_location)), 
+          IconButton(onPressed:_setCurrentAddress, icon: Icon(Icons.my_location, size: 20,)), 
         ]
       ),
     ); 
@@ -242,19 +246,21 @@ class _MyLocationState extends State<MyHomePage> {
         print("test: " + sky);
         switch(sky) {
           case "맑음":
-            // icon = new Icon(
-            //   Icons.sunny, 
-            //   color: Colors.red,
-            //   size: 170,
-            //   );
-            path = 'assets/image/sunny.png';
+            // path = 'assets/image/sunny.png';
+            path = 'assets/image/weather/weather_sunny.png';
             break;
           case "구름 많음":
-            path = 'assets/image/cloudy.png';
+            // path = 'assets/image/cloudy.png';
+            path = 'assets/image/weather/weather_sunny_cloud.png';
             break;
           case "흐림":
-            path = 'assets/image/cloud.png';
+            // path = 'assets/image/cloud.png';
+            path = 'assets/image/weather/weather_cloudy.png';
             break;
+          case "비 옴":
+            // path = 'assets/image/cloud.png';
+            path = 'assets/image/weather/weather_rainy.png';
+          break;
         }
       } catch(exception) {
         print("error");
@@ -262,8 +268,8 @@ class _MyLocationState extends State<MyHomePage> {
 
       return Image.asset(
                       path,
-                      width: 120,
-                      height: 120,
+                      width: 140,
+                      height: 140,
       );
     
     }
@@ -272,22 +278,22 @@ class _MyLocationState extends State<MyHomePage> {
     Widget getWeatherContainer = Container(
       margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: Column(
-        //crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Row(
-            //mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               getWeatherIcon(),
+              Container(
+                width: 10,
+              ),
               Column(
                 children: [
                   Text(
-                    "$txt2°C", 
+                    " $txt2°", 
                     style: TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold 
+                      fontSize: 55,
+                      fontWeight: FontWeight.w800 
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -298,26 +304,11 @@ class _MyLocationState extends State<MyHomePage> {
                     ),
                     textAlign: TextAlign.center,
                   ),  
-                  // Text(
-                  //   "최고 기온: ${currentLocation.tmx}", 
-                  //   style: TextStyle(
-                  //     //color: Colors.red,
-                  //     fontSize: 20
-                  //   ),
-                  // ),
-                  // Text(
-                  //   "최저 기온: ${currentLocation.tmn}",
-                  //   style: TextStyle(
-                  //     //color: Colors.lightBlueAccent,
-                  //     fontSize: 20
-                  //   ),
-                  //   textAlign: TextAlign.right,
-                  // ),  
                 ],
               ), 
             ],
           ),
-          Container(height: 40),
+          Container(height: 25),
           Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -325,11 +316,11 @@ class _MyLocationState extends State<MyHomePage> {
                       children: [
                         Text(
                           '최저 기온',
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
                         ),
                         Text(
                           '${currentLocation.tmn}°C',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 13),
                         ),
                       ],
                     ),
@@ -338,11 +329,11 @@ class _MyLocationState extends State<MyHomePage> {
                       children: [
                         Text(
                           '최고 기온',
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
                         ),
                         Text(
                           '${currentLocation.tmx}°C',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 13),
                         ),
                       ],
                     ),
@@ -351,12 +342,12 @@ class _MyLocationState extends State<MyHomePage> {
                       children: [
                         Text(
                           '강수확률',
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
                         ),
                         Text(
                           //'강수량',
                           '${currentLocation.weatherNowList[1]}%',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 13),
                         ),
                       ],
                     ),
@@ -365,71 +356,17 @@ class _MyLocationState extends State<MyHomePage> {
                       children: [
                         Text(
                           '습도',
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
                         ),
                         Text(
                           //'습도',
                           '${currentLocation.weatherNowList[2]}%',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 13),
                         ),
                       ],
                     ),
                   ],
                 ), 
-          // Row(
-          //   //crossAxisAlignment: CrossAxisAlignment.stretch,
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   children: [
-          //     Text(
-          //           "최고 기온", 
-          //           style: TextStyle(
-          //             //color: Colors.red,
-          //             fontSize: 20
-          //           ),
-          //         ),
-          //         Text(
-          //           "최저 기온",
-          //           style: TextStyle(
-          //             //color: Colors.lightBlueAccent,
-          //             fontSize: 20
-          //           ),
-          //           textAlign: TextAlign.right,
-          //         ), 
-          //     Text(
-          //       "비 올 확률%"
-          //     ),
-          //     Text(
-          //       "현재 습도 상태"
-          //     ) 
-          //   ],
-          // ),
-          // Row(
-          //   //crossAxisAlignment: CrossAxisAlignment.stretch,
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   children: [
-          //     Text(
-          //           "${currentLocation.tmx}", 
-          //           style: TextStyle(
-          //             //color: Colors.red,
-          //             fontSize: 20
-          //           ),
-          //         ),
-          //         Text(
-          //           "${currentLocation.tmn}",
-          //           style: TextStyle(
-          //             //color: Colors.lightBlueAccent,
-          //             fontSize: 20
-          //           ),
-          //           textAlign: TextAlign.right,
-          //         ), 
-          //     Text(
-          //       "${currentLocation.weatherNowList[1]}%"
-          //     ),
-          //     Text(
-          //       "${Translator(currentLocation.weatherNowList).getHumid(currentLocation.weatherNowList[2])}"
-          //     ) 
-          //   ],
-          // ),
         ],
       ),
     );
@@ -524,7 +461,7 @@ class _MyLocationState extends State<MyHomePage> {
         children: <Widget> [
           getLocationContainer, 
           Container(
-            height: 20,
+            height: 10,
           ),
           // 날씨
           getWeatherContainer,
@@ -548,14 +485,14 @@ class _MyLocationState extends State<MyHomePage> {
           ),
           // 옷
           getClothesContainer,
-          Container(
-            height: 70,
-          ),
-          Divider(
-                  height: 1,
-                  thickness: 3,
-                  //color: Colors.grey[500],
-          ),  
+          // Container(
+          //   height: 70,
+          // ),
+          // Divider(
+          //         height: 1,
+          //         thickness: 3,
+          //         //color: Colors.grey[500],
+          // ),  
         ],
         
       ),

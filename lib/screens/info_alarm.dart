@@ -36,7 +36,7 @@ class AlarmInfo extends StatelessWidget {
   tts.setPitch(0.9);
   tts.speak(controller.text);
 
-  Icon icon = new Icon(Icons.error);
+  //Icon icon = new Icon(Icons.error);
   Translator sky = new Translator(currentLocation.weatherNowList);
         switch(sky.isSunny(currentLocation.weatherNowList[3])) {
           case "맑음":
@@ -84,7 +84,7 @@ class AlarmInfo extends StatelessWidget {
           Container(
             height: 10,
           ),
-          Expanded( //옷차림 정보
+          Expanded( //옷차림 정보 - 추후 수정 필요 
             child: Image(
               image : AssetImage('assets/image/cloth_example.png'),
             ),
