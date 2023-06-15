@@ -7,7 +7,7 @@ import 'package:alarm_example/models/location.dart';
 import 'package:alarm_example/models/weatherAPI.dart';
 import 'package:alarm_example/main.dart';
 import 'package:alarm_example/models/translator.dart';
-import 'package:alarm_example/models/clothes.dart';
+//import 'package:alarm_example/models/clothes.dart';
 //import 'package:geolocator/geolocator.dart';
 
 
@@ -103,8 +103,10 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
     suma = Translator(modellocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]); // 요약
     humidity = modellocation.weatherNowList[2]; // 습도
     kangsu = modellocation.weatherNowList[1]; // 강수량
+
     //clothicon = Clothes(double.parse(modellocation.weatherNowList[0])).getImage();
     clothicon = 'assets/image/img3.png';
+
     timeicon = 'assets/image/chart.png';
     // cody = '추천 코디 : 긴바지, 맨투맨, 얇은 가디건, 니트';
     } catch(exception) {
