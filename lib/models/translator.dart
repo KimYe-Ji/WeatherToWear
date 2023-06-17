@@ -32,7 +32,7 @@ class Translator {
    * 구름 많음: 6 ~ 8
    * 흐림: 9 ~ 10
   */
-  String isSunny(String sky) {
+  String isSunny(String sky, String pop) {
     late String status;
     switch(sky) {
       case "0":
@@ -53,6 +53,11 @@ class Translator {
         status = "흐림";
         break;
     }
+
+    if(double.parse(pop) > 80) {
+      status = "비 옴";
+    }
+
     return status;
   }
 }

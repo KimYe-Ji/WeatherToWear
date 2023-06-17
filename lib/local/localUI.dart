@@ -7,7 +7,7 @@ import 'package:alarm_example/models/location.dart';
 import 'package:alarm_example/models/weatherAPI.dart';
 import 'package:alarm_example/main.dart';
 import 'package:alarm_example/models/translator.dart';
-//import 'package:alarm_example/models/clothes.dart';
+import 'package:alarm_example/models/clothes.dart';
 //import 'package:geolocator/geolocator.dart';
 
 
@@ -21,9 +21,11 @@ class localWeatherPage extends StatefulWidget {
 }
 
 class _LocalWeatherPageState extends State<localWeatherPage> {
-  String sumaicon = 'assets/image/loading2.png'; // 아이콘 이미지 경로
-  String clothicon = 'assets/image/loading2.png';
-  String timeicon = 'assets/image/loading2.png';
+  String sumaicon = 'assets/image/loading_blue.gif'; // 아이콘 이미지 경로
+  //String clothicon = 'assets/image/loading_blue.gif';
+  String timeicon = 'assets/image/loading_blue.gif';
+  String topimage = 'assets/image/loading_blue.gif';
+  String botimage = 'assets/image/loading_blue.gif';
   String ctmp = ''; // 현재 기온
   String suma = ''; // 날씨 요약
   String humidity = '0'; // 습도
@@ -36,6 +38,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
   @override
   void initState() {
     super.initState();
+    _setmodelAddress(modellocation, widget.location);
   }
 
   Future<void> _getmodelLocation(Location modellocation, localLocation location) async{
@@ -72,47 +75,90 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
   @override
   Widget build(BuildContext context) {
 
-    //Location 객체 생성
+    print('Location 객체 생성');
     //Location modellocation = new Location("${widget.location.city} ${widget.location.district}");
     //print("Location 객체 생성 ${modellocation.address}");
 
-    _setmodelAddress(modellocation, widget.location);
+    //_setmodelAddress(modellocation, widget.location);
 
-    print('setmodel 이후, translator 전');
+    //print('setmodel 이후, translator 전');
     
   
     try{
     Translator sky = new Translator(modellocation.weatherNowList);
-      switch(sky.isSunny(modellocation.weatherNowList[3])) {
+      switch(sky.isSunny(modellocation.weatherNowList[3], modellocation.weatherNowList[1])) {
         case "맑음":
-          sumaicon = 'assets/image/sunny.png';
+          sumaicon = 'assets/image/weather/weather_sunny.png';
           break;
         case "구름 많음":
-          sumaicon = 'assets/image/cloudy.png';
+          sumaicon = 'assets/image/weather/weather_sunny_cloud.png';
           break;
         case "흐림":
-          sumaicon = 'assets/image/cloud.png';
+          sumaicon = 'assets/image/weather/weather_cloudy.png';
+          break;
+        case "비 옴":
+          sumaicon = 'assets/image/weather/weather_rainy.png';
           break;
       }
     addr = modellocation.address;
     ctmp = modellocation.weatherNowList[0]; // 현재 기온
-    // ctmp = '19';
-    // suma = '맑음';
-    // humidity = '45';
-    // kangsu = '0';
-    suma = Translator(modellocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]); // 요약
+    suma = Translator(modellocation.weatherNowList).isSunny(currentLocation.weatherNowList[3], currentLocation.weatherNowList[1]); // 요약
     humidity = modellocation.weatherNowList[2]; // 습도
     kangsu = modellocation.weatherNowList[1]; // 강수량
-
-    //clothicon = Clothes(double.parse(modellocation.weatherNowList[0])).getImage();
-    clothicon = 'assets/image/img3.png';
-
-    timeicon = 'assets/image/chart.png';
-    // cody = '추천 코디 : 긴바지, 맨투맨, 얇은 가디건, 니트';
+    
     } catch(exception) {
     print('에러 났자나... 접근 안되자나....');
     }
 
+    Widget getlocalImageSlide() {
+      try{
+        topimage = Clothes(double.parse(modellocation.weatherNowList[0])).getTopImg();
+        botimage = Clothes(double.parse(modellocation.weatherNowList[0])).getBottomImg();
+      } catch(exception) { print('cloth image loading'); }
+
+      void changelocalImage() {
+        setState(() {
+          topimage = Clothes(double.parse(modellocation.weatherNowList[0])).getTopImg();
+          botimage = Clothes(double.parse(modellocation.weatherNowList[0])).getBottomImg();
+        });
+      }
+      
+
+      return Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
+          children: [
+            // left button
+            IconButton(onPressed: changelocalImage, icon: Icon(Icons.arrow_left_sharp, size: 50,)),
+            // top and bottom
+            Container(
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(""),
+                  // top
+                  Image.asset(
+                    "${topimage}", 
+                    width: 160,
+                    height: 160,
+                    fit: BoxFit.contain,
+                  ), 
+                  // bottom
+                  Image.asset(
+                    "${botimage}",
+                    width: 160,
+                    height: 160,
+                    fit: BoxFit.contain,
+                  )
+                ],
+              ),
+            ), 
+            // right button
+            IconButton(onPressed: changelocalImage, icon: Icon(Icons.arrow_right_sharp, size: 50,))
+          ],
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -123,13 +169,13 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 20),
+                SizedBox(height: 1),
                 // 위치
                 Text(
                   addr,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 3),
                 
                 // 날씨 요약과 아이콘
                 Row(
@@ -137,16 +183,19 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
                   children: [
                     Image.asset(
                       sumaicon,
-                      width: 90,
-                      height: 90,
+                      width: 140,
+                      height: 140,
                     ),
-                    SizedBox(width: 10),
+                    //SizedBox(width: 10),
                     Column(
                       children: [
                         Text(
-                          '${ctmp}°C',
+                          ' ${ctmp}°',
                           //'23도',
-                          style: TextStyle(fontSize: 48),
+                          style: TextStyle(
+                          fontSize: 55,
+                          fontWeight: FontWeight.w800 
+                        ),
                         ),
                         Text(
                           //'맑음',
@@ -167,10 +216,10 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
                       children: [
                         Text(
                           '최저 기온',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                         ),
                         Text(
-                          '${modellocation.tmn}°C',
+                          '${modellocation.tmn}°',
                           style: TextStyle(fontSize: 13),
                         ),
                       ],
@@ -180,10 +229,11 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
                       children: [
                         Text(
                           '최고 기온',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                         ),
                         Text(
-                          '${modellocation.tmx}°C',
+                          // '${modellocation.tmx}°C',
+                          '${modellocation.tmx}°',
                           style: TextStyle(fontSize: 13),
                         ),
                       ],
@@ -193,7 +243,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
                       children: [
                         Text(
                           '강수확률',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                         ),
                         Text(
                           //'강수량',
@@ -207,7 +257,7 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
                       children: [
                         Text(
                           '습도',
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                         ),
                         Text(
                           //'습도',
@@ -219,50 +269,10 @@ class _LocalWeatherPageState extends State<localWeatherPage> {
                   ],
                 ),//container
                 SizedBox(height: 30),
-                
-                // 구분선
-                Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: Colors.grey[300],
-                  indent: 40,
-                  endIndent: 40,
-                ),
-                SizedBox(height: 30),
-                
-                Text(cody, style: TextStyle(fontSize: 15)),
-                SizedBox(height: 10),
-                // 옷사진
-                Image.asset(
-                      clothicon,
-                      width: 400,
-                      height: 150,
-                ),
-                /*
-                Icon(
-                  Icons.shopping_bag,
-                  size: 50,
-                ),*/
-                SizedBox(height: 30),
-                
-                // 구분선
-                Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: Colors.grey[300],
-                  indent: 40,
-                  endIndent: 40,
-                ),
-                SizedBox(height: 30),
 
-                // 시간별 기온 그래프
-                Image.asset(
-                      timeicon,
-                      width: 400,
-                      height: 100,
-                ),
-
-                SizedBox(height: 50),
+                // 추천 코디
+                getlocalImageSlide(),
+                
               ],
             ),
           ),

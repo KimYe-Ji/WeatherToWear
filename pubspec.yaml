@@ -25,6 +25,7 @@ dependencies:
   intl: ^0.18.1
   fl_chart: ^0.62.0
   syncfusion_flutter_charts: ^21.2.8
+  fluttertoast: ^8.2.2
   
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -56,26 +57,37 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/mp3/무음.mp3
-    - assets/image/cloth_example.png
-    - assets/image/chart.png
-    - assets/image/sunny.png
-    - assets/image/cloudy.png
-    - assets/image/cloud.png
-    - assets/image/loading2.png
     - assets/image/loading.png
-    - assets/image/img1.png
-    - assets/image/img2.png
-    - assets/image/img3.png
-    - assets/image/img4.png
-    - assets/image/img5.png
-    - assets/image/img6.png
-    - assets/image/img7.png
-    - assets/image/img8.png
+    - assets/image/loading_blue.gif
     - assets/image/weather/weather_sunny.png
     - assets/image/weather/weather_rainy.png
     - assets/image/weather/weather_sunny_cloud.png
     - assets/image/weather/weather_cloudy.png
-
+    - assets/image/clothes/jeans.png
+    - assets/image/clothes/shirt1.png
+    - assets/image/clothes/shirt2.png
+    - assets/image/clothes/shirt3.png
+    - assets/image/clothes/shirt4.png
+    - assets/image/clothes/shirt5.png
+    - assets/image/clothes/shirt6.png
+    - assets/image/clothes/shirt7.png
+    - assets/image/clothes/shirt8.png
+    - assets/image/clothes/shorts1.png
+    - assets/image/clothes/shorts2.png
+    - assets/image/clothes/shorts3.png
+    - assets/image/clothes/shorts4.png
+    - assets/image/clothes/shorts5.png
+    - assets/image/clothes/shorts6.png
+    - assets/image/clothes/skirt.png
+    - assets/image/clothes/wjeans.png
+    - assets/image/clothes/wshirt1.png
+    - assets/image/clothes/wshirt2.png
+    - assets/image/clothes/wshirt3.png
+    - assets/image/clothes/wshirt4.png
+    - assets/image/clothes/wshirt5.png
+    - assets/image/clothes/wshorts1.png
+    - assets/image/clothes/wshorts2.png
+    - assets/image/clothes/wshorts3.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

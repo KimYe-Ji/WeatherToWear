@@ -1,4 +1,3 @@
-// location.dart
 import 'package:alarm_example/models/weather.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +20,7 @@ class Location {
   // index 3 - 하늘 맑은 정도 
   late List<String> weatherNowList;
 
-  late double tmn = 0; 
+  late double tmn = 0;
   late double tmx = 0;
 
   // constructor
@@ -40,6 +39,41 @@ class Location {
 
     print(position);
   }
+
+  void setPosition2(double lat, double lon) {
+    this.lat = lat;
+    this.lon = lon;
+
+    print('${lat}, ${lon}');
+  }
+
+  void getLocationAddr2() async {
+    // 위도, 경도
+    var lat = this.lat;
+    var lon = this.lon;
+
+    // kakao api: REST
+    Uri kakaoUri = Uri.parse(
+        "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=$lon&y=$lat&input_coord=WGS84");
+    final String kakao_api = "48e1b9a10f747c23afbb5cbfd6de457c";
+
+    var kakaoAddr = await http
+        .get(kakaoUri, headers: {"Authorization": "KakaoAK $kakao_api"});
+    
+    // convert to json
+    var toJson = jsonDecode(kakaoAddr.body);
+
+    // parse json -> address
+    String addr = toJson["documents"][0]["address"]["region_1depth_name"] +
+        " " +
+        toJson["documents"][0]["address"]["region_2depth_name"];
+
+    // print(addr);
+    this.address = addr;
+
+    print("주소 변환: $address");
+  }
+
 
   // get address
   void getLocationAddr() async {
@@ -71,43 +105,7 @@ class Location {
     print("주소 변환: $address");
   }
 
-
-  //for localPage.dart
-  void setPosition2(double lat, double lon) {
-    this.lat = lat;
-    this.lon = lon;
-
-    print('${lat}, ${lon}');
-  }
-
-
-  void getLocationAddr2() async {
-    // 위도, 경도
-    var lat = this.lat;
-    var lon = this.lon;
-
-    // kakao api: REST
-    Uri kakaoUri = Uri.parse(
-        "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=$lon&y=$lat&input_coord=WGS84");
-    final String kakao_api = "48e1b9a10f747c23afbb5cbfd6de457c";
-
-    var kakaoAddr = await http
-        .get(kakaoUri, headers: {"Authorization": "KakaoAK $kakao_api"});
-    
-    // convert to json
-    var toJson = jsonDecode(kakaoAddr.body);
-
-    // parse json -> address
-    String addr = toJson["documents"][0]["address"]["region_1depth_name"] +
-        " " +
-        toJson["documents"][0]["address"]["region_2depth_name"];
-
-    // print(addr);
-    this.address = addr;
-
-    print("주소 변환: $address");
-  }
-
+  
 
 
   // getters
@@ -129,6 +127,31 @@ class Location {
     }
   }
 
+  double getNoonTemp() { 
+  double temp = -273;
+
+  for(Weather w in tempList) {
+    if(w.fcsttime == "1300") {
+      temp = double.parse(w.fcstValue);
+    }
+  }
+
+  return temp; 
+}
+
+double getNightTemp() {
+  double temp = -273;
+
+  for(Weather w in tempList) {
+    if(w.fcsttime == "2100") {
+      temp = double.parse(w.fcstValue);
+    }
+  }
+
+  return temp; 
+}
+
+
   void getSkyList() {
     for(Weather w in skyList) {
       w.getWeather();
@@ -144,36 +167,30 @@ class Location {
 
   void weatherNow(var time) {
     // List<String> weatherNow = new List.empty(growable: true);
-    // weatherNowList.clear();
 
     for(Weather w in tempList) {
       if(w.fcsttime == time) {
         weatherNowList.add(w.fcstValue);
-        // print("1");
       }
     }
 
     for(Weather w in popList) {
       if(w.fcsttime == time) {
         weatherNowList.add(w.fcstValue);
-        // print("2");
       }
     }
 
     for(Weather w in rehList) {
       if(w.fcsttime == time) {
         weatherNowList.add(w.fcstValue);
-        // print("3");
       }
     }
 
     for(Weather w in skyList) {
       if(w.fcsttime == time) {
         weatherNowList.add(w.fcstValue);
-        // print("4");
       }
     }
-
     print("in location class : $weatherNowList");
   }
 }

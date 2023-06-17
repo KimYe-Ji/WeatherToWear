@@ -1,7 +1,11 @@
+import 'dart:math';
+
 class Clothes {
   double temp = -273;
-  String imgPath = "assets/image/";
 
+  String imgPath = "assets/image/clothes/";
+  // default - man
+  String gender = "male";
 
   Clothes(double t) {
     this.temp = t;
@@ -31,6 +35,109 @@ class Clothes {
     return recommended;
   }
 
+  // setter - 성별
+  void setGender(String gender) {
+    this.gender = gender;
+  }
+
+  // 상의 - 온도 따른 구분
+  List getTops() {
+    List list;
+
+    if(temp > 28.0) {
+      if(gender == "female") {
+        list = ["wshirt1", "wshirt2", "wshirt3", "wshirt4", "wshirt5"];
+      } else {
+        list = ["shirt1", "shirt2", "shirt3", "shirt4", "shirt5"];
+      }
+    } else if(temp <= 28.0 && temp > 23.0) {
+      if(gender == "female") {
+        list = ["wshirt1", "wshirt2", "wshirt3", "wshirt4", "wshirt5"];
+      } else {
+        list = ["shirt1", "shirt2", "shirt3", "shirt4", "shirt5"];
+      }
+    } else if(temp <= 23.0 && temp > 20.0) {
+      if(gender == "female") {
+        list = ["wshirt1", "wshirt2", "wshirt3", "wshirt4", "wshirt5"];
+      } else {
+        list = ["shirt1", "shirt2", "shirt3", "shirt4", "shirt5"];
+      }
+    } else if(temp <= 20 && temp > 17) {
+      if(gender == "female") {
+        list = ["wshirt1", "wshirt2", "wshirt3", "wshirt4", "wshirt5"];
+      } else {
+        list = ["shirt1", "shirt2", "shirt3", "shirt4", "shirt5"];
+      }
+    } else if(temp <= 17 && temp > 12) {
+      list = ["jacket", "cardigan", "blazer"];
+    } else if(temp <= 12 && temp > 9) {
+      list = ["jacket", "trenchcoat", "blazer", "knit"];
+    } else if(temp <=9 && temp > 5) {
+      list = ["coat", "leatherjacket", "knit"];
+    } else {
+      list = ["padding", "coat"];
+    }
+
+    return list; 
+  }
+
+  // 하의 - 성별 따른 구분 + 온도 따른 구분
+  List getBottoms() {
+    List list;
+
+    if(temp > 28.0) {
+      if(gender == "female") {
+        list = ["wshorts1", "wshorts2", "wshorts3", "skirt"];
+      } else {
+        list = ["shorts1", "shorts2", "shorts3", "shorts4", "shorts5", "shorts6"];
+      }
+    } else if(temp <= 28.0 && temp > 23.0) {
+      if(gender == "female") {
+        list = ["wshorts1", "wshorts2", "wshorts3", "skirt"];
+      } else {
+        list = ["shorts1", "shorts2", "shorts3", "shorts4", "shorts5", "shorts6"];
+      }
+    } else if(temp <= 23.0 && temp > 20.0) {
+      if(gender == "female") {
+        list = ["wshorts1", "wshorts2", "wshorts3", "skirt", "wjeans"];
+      } else {
+        list = ["shorts1", "shorts2", "shorts3", "shorts4", "shorts5", "shorts6", "jeans"];
+      }
+    } else if(temp <= 20 && temp > 17) {
+      if(gender == "female") {
+        list = ["wshorts1", "wshorts2", "wshorts3", "skirt", "wjeans"];
+      } else {
+        list = ["shorts1", "shorts2", "shorts3", "shorts4", "shorts5", "shorts6", "jeans"];
+      }
+    } else if(temp <= 17 && temp > 12) {
+      if(this.gender == "female") {
+        list = ["slacks", "jeans", "stockings"];
+      } else {
+        list = ["jeans"];
+      }
+    } else if(temp <= 12 && temp > 9) {
+      if(this.gender == "female") {
+        list = ["slacks", "jeans", "stockings"];
+      } else {
+        list = ["slacks", "jeans"];
+      }
+    } else if(temp <=9 && temp > 5) {
+      if(this.gender == "female") {
+        list = ["slacks", "jeans", "stockings"];
+      } else {
+        list = ["slacks", "jeans"];
+      }
+    } else {
+      if(this.gender == "female") {
+        list = ["slacks", "jeans", "stockings"];
+      } else {
+        list = ["slacks", "jeans"];
+      }
+    }
+
+    return list; 
+  }
+
   String getImage() {
     String path = "";
 
@@ -53,5 +160,31 @@ class Clothes {
     }
     
     return imgPath+path;
+  }
+
+  // 상의 img path
+  String getTopImg() {
+    // 온도 따른 상의 list
+    List list = getTops();
+
+    // 난수 생성
+    int num = Random().nextInt(list.length);
+
+    String p = imgPath+getTops()[num]+".png";
+    
+    return p;
+  }
+
+  // 하의 img path
+  String getBottomImg() {
+    // 온도 따른 하의 list
+    List list = getBottoms();
+
+    // 난수 생성
+    int num = Random().nextInt(list.length);
+
+    String p = imgPath+getBottoms()[num]+".png";
+    
+    return p;
   }
 }

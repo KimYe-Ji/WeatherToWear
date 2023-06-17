@@ -37,7 +37,9 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
       loopAudio = true;
       vibrate = true;
       showNotification = true;
+      //assetAudio = 'assets/mp3/무음.mp3';
       assetAudio = 'assets/무음.mp3';
+
     } else {
       selectedTime = TimeOfDay(
         hour: widget.alarmSettings!.dateTime.hour,

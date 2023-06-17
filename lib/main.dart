@@ -11,6 +11,7 @@ import 'package:alarm_example/models/location.dart';
 import 'package:alarm_example/models/translator.dart';
 // import 'package:flutter_application_1/models/weather.dart';
 import 'package:alarm_example/models/weatherAPI.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 // // import 'package:http/http.dart';
 // import 'package:http/http.dart' as http;
@@ -23,6 +24,8 @@ import 'package:flutter/services.dart';
 import 'package:alarm_example/screens/localpage.dart';
 import 'package:alarm_example/screens/home.dart';
 import 'package:alarm_example/local/localPage.dart';
+import 'package:alarm_example/screens/cloth_screen.dart';
+
 
 
 // global variables
@@ -77,6 +80,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'NanumSquareNeo',
       ),
+      routes: {
+        '/main':(context) => MyHomePage(),
+      },
       // home: const MyHomePage(),
       home: LoadingPage(),
     );
@@ -88,16 +94,28 @@ class LoadingPage extends StatefulWidget {
   LoadingPageState createState() => LoadingPageState();
 }
 
+void showToast(String msg) {
+  Fluttertoast.showToast(
+    msg: msg, 
+    backgroundColor: Color.fromARGB(255, 216, 242, 255), 
+    textColor: const Color.fromARGB(255, 44, 44, 44),
+    toastLength: Toast.LENGTH_LONG, 
+    gravity: ToastGravity.BOTTOM, 
+  );
+}
+
 class LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    
-    
+
+    showToast("날씨 정보 불러오는 중 ...");
 
     Timer(
       Duration(seconds:13), 
-      () => Navigator.push(context, MaterialPageRoute(builder:(context)=>MyHomePage()))
+      // () => Navigator.push(context, MaterialPageRoute(builder:(context)=>MyHomePage()))
+      // () => Navigator.popAndPushNamed(context, "/main")
+      () => Navigator.of(context).pushReplacementNamed("/main"),
     );
   }
 
@@ -171,7 +189,7 @@ class _MyLocationState extends State<MyHomePage> {
     // TODO: implement initState
     txt = currentLocation.address;
     txt2 = currentLocation.weatherNowList[0];
-    sky = translator.isSunny(currentLocation.weatherNowList[3]);
+    sky = translator.isSunny(currentLocation.weatherNowList[3], currentLocation.weatherNowList[1]);
 
     super.initState();
 
@@ -190,7 +208,7 @@ class _MyLocationState extends State<MyHomePage> {
 
         txt = currentLocation.address;
         txt2 = currentLocation.weatherNowList[0];
-        sky = translator.isSunny(currentLocation.weatherNowList[3]);
+        sky = translator.isSunny(currentLocation.weatherNowList[3], currentLocation.weatherNowList[1]);
 
         print(txt);
         print(txt2);
@@ -242,7 +260,7 @@ class _MyLocationState extends State<MyHomePage> {
       Future.delayed(Duration(seconds: 3));
 
       try {
-        sky = Translator(currentLocation.weatherNowList).isSunny(currentLocation.weatherNowList[3]);
+        sky = Translator(currentLocation.weatherNowList).isSunny(currentLocation.weatherNowList[3], currentLocation.weatherNowList[1]);
         print("test: " + sky);
         switch(sky) {
           case "맑음":
@@ -308,7 +326,7 @@ class _MyLocationState extends State<MyHomePage> {
               ), 
             ],
           ),
-          Container(height: 25),
+          Container(height: 20),
           Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -319,7 +337,7 @@ class _MyLocationState extends State<MyHomePage> {
                           style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
                         ),
                         Text(
-                          '${currentLocation.tmn}°C',
+                          '${currentLocation.tmn}°',
                           style: TextStyle(fontSize: 13),
                         ),
                       ],
@@ -371,32 +389,81 @@ class _MyLocationState extends State<MyHomePage> {
       ),
     );
 
-    // 옷 추천 Container
-    Widget getClothesContainer = Container(
-      margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        //crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            "오늘의 추천 : ${clothes.getClothes()}", 
-            style: TextStyle(
-              fontSize: 13
-            ),
-          ),
-          Container(
-            height: 15,
-          ),
-          Image.asset(
-            // 상대 경로로 접근 불가
-            "${clothes.getImage()}", 
-            //fit: BoxFit.fill,
-            width: 500,
-            height: 125,
-          ),
-        ]
-      ),
-    );
+    // // 옷 추천 Container
+    // Widget getClothesContainer = Container(
+    //   margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
+    //   child: Column(
+    //     mainAxisAlignment: MainAxisAlignment.center,
+    //     //crossAxisAlignment: CrossAxisAlignment.stretch,
+    //     children: [
+    //       Text(
+    //         "오늘의 추천 : ${clothes.getClothes()}", 
+    //         style: TextStyle(
+    //           fontSize: 13
+    //         ),
+    //       ),
+    //       Container(
+    //         height: 15,
+    //       ),
+    //       Image.asset(
+    //         // 상대 경로로 접근 불가
+    //         "${clothes.getImage()}", 
+    //         //fit: BoxFit.fill,
+    //         width: 500,
+    //         height: 125,
+    //       ),
+    //     ]
+    //   ),
+    // );
+
+
+    Widget getImageSlide() {
+      String topPath = clothes.getTopImg();
+      String botPath = clothes.getBottomImg();
+
+      void changeImage() {
+        setState(() {
+          topPath = clothes.getTopImg();
+          botPath = clothes.getBottomImg();
+        });
+      }
+
+      return Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
+          children: [
+            // left button
+            IconButton(onPressed: changeImage, icon: Icon(Icons.arrow_left_sharp, size: 50,)),
+            // top and bottom
+            Container(
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(""),
+                  // top
+                  Image.asset(
+                    "${topPath}", 
+                    width: 160,
+                    height: 160,
+                    //fit: BoxFit.contain,
+                  ), 
+                  // bottom
+                  Image.asset(
+                    "${botPath}",
+                    width: 160,
+                    height: 160,
+                    //fit: BoxFit.contain,
+                  )
+                ],
+              ),
+            ), 
+            // right button
+            IconButton(onPressed: changeImage, icon: Icon(Icons.arrow_right_sharp, size: 50,))
+          ],
+        ),
+      );
+    }
+
 
     // 자체 navigation bar
     Widget myNavigationbar = Container(
@@ -417,10 +484,11 @@ class _MyLocationState extends State<MyHomePage> {
               // to timeline page
               Navigator.push(
                 context, 
-                MaterialPageRoute(builder: (context) => const LocalPage()),  
+                //MaterialPageRoute(builder: (context) => const LocalPage()),  
+                MaterialPageRoute(builder: (context) => ClothInfo()), 
               )
             }, 
-            icon: Icon(Icons.timeline,), 
+            icon: Icon(Icons.checkroom), 
             iconSize: 35,
           ), 
           IconButton(
@@ -429,6 +497,7 @@ class _MyLocationState extends State<MyHomePage> {
               Navigator.push(
                 context, 
                 MaterialPageRoute(builder: (context) => localPage()),  
+                
               )
             }, 
             icon: Icon(Icons.map,), 
@@ -452,51 +521,64 @@ class _MyLocationState extends State<MyHomePage> {
     );
 
 
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
+    return WillPopScope(
+      onWillPop: () {
+          return Future(() => false);
+        },
+        child: Scaffold(
+        // appBar: AppBar(
+        //   automaticallyImplyLeading: false,
+        // ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget> [
+            Container(height: 60 ),
+            getLocationContainer, 
+            // Container(
+            //   height: 5,
+            // ),
+            // 날씨
+            getWeatherContainer,
+            // Container(
+            //   height: 20,
+            // ),
+            // Container(
+            //   margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
+            //   width: 500,
+            //   child: Divider(color: Colors.lightBlue, thickness: 2.0),
+            // ),
+            // Divider(
+            //         height: 1,
+            //         thickness: 1,
+            //         color: Colors.grey[500],
+            //         indent: 40,
+            //         endIndent: 40,
+            //       ),
+            // Container(
+            //   height: 40,
+            // ),
+            // // 옷
+            // getClothesContainer,
+            Container(height: 10),
+            getImageSlide(), 
+            Container(height: 1),
+            // Container(
+            //   height: 70,
+            // ),
+
+            // Container(
+            //   height: 70,
+            // ),
+            // Divider(
+            //         height: 1,
+            //         thickness: 3,
+            //         //color: Colors.grey[500],
+            // ),  
+          ],
+          
+        ),
+        bottomNavigationBar: myNavigationbar,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget> [
-          getLocationContainer, 
-          Container(
-            height: 10,
-          ),
-          // 날씨
-          getWeatherContainer,
-          Container(
-            height: 40,
-          ),
-          // Container(
-          //   margin: EdgeInsets.fromLTRB(20, 5, 20, 5),
-          //   width: 500,
-          //   child: Divider(color: Colors.lightBlue, thickness: 2.0),
-          // ),
-          Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: Colors.grey[500],
-                  indent: 40,
-                  endIndent: 40,
-                ),
-          Container(
-            height: 40,
-          ),
-          // 옷
-          getClothesContainer,
-          // Container(
-          //   height: 70,
-          // ),
-          // Divider(
-          //         height: 1,
-          //         thickness: 3,
-          //         //color: Colors.grey[500],
-          // ),  
-        ],
-        
-      ),
-      bottomNavigationBar: myNavigationbar,
     );
   }
 }
